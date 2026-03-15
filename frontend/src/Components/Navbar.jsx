@@ -172,7 +172,8 @@ const Navbar = () => {
                 </div>
 
                 {/* SIDEBAR */}
-                <div className={`absolute top-0 right-0 bottom-0  sidebar-menu transition-all ${visible ? "w-full" : "w-0"}`}>
+                {/* <div className={`absolute top-0 right-0 bottom-0  sidebar-menu transition-all ${visible ? "w-full" : "w-0"}`}> */}
+                <div className={`fixed top-0 right-0 h-full sidebar-menu transition-all duration-300 ${visible ? "w-64" : "w-0"} overflow-hidden`}>
                     <div className="flex flex-col">
                         <div onClick={() => setVisible(false)} className='flex items-center gap-4 cursor-pointer back-btn'>
                             <img src={assets.dropdown_icon} alt="back" className='h-4 rotate-180' />
