@@ -7,6 +7,8 @@ import userRouter from './routes/userRoute.js';
 import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRoute.js';
 import orderRouter from './routes/orderRoute.js';
+import recommendationRouter from './routes/RecommendationRoute.js';
+
 
 
 // APP CONFIG
@@ -26,21 +28,16 @@ app.use('/api/user',userRouter);
 app.use('/api/product',productRouter);
 app.use('/api/cart',cartRouter);
 app.use('/api/order',orderRouter);
+app.use('/api/recommendations', recommendationRouter);   // ← NEW
+
 app.get('/',(req,res)=>{
     res.send("API Working.");
 });
 
 
-app.listen(port, (error)=>{
-    if(!error)
-        {
-        console.log("server started on PORT", port);
-    }
-    else
-    {
-        console.error("Error starting server:", error);
-    }
-})
+app.listen(port, () => {
+    console.log(`Server running on PORT ${port}`);
+});
 
 
 

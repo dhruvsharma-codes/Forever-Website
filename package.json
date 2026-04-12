@@ -1,0 +1,26 @@
+{
+  "name": "forever-website",
+  "version": "1.0.0",
+  "description": "A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce platform specialized in clothing retail, offering a seamless shopping experience with admin management capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix admin\" \"npm run dev --prefix backend\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhruvsharma-codes/Forever-Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dhruvsharma-codes/Forever-Website/issues"
+  },
+  "homepage": "https://github.com/dhruvsharma-codes/Forever-Website#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

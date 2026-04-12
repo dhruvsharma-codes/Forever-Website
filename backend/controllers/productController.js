@@ -32,8 +32,6 @@ try {
         image:imagesUrl,
         date:Date.now(),
     }
-    console.log(productData);
-
     const product = new productModel(productData);
     await product.save();
 
@@ -79,7 +77,45 @@ try {
 }
 }
 
-export {addProduct, listProducts, removeProduct, singleProduct}
+
+const recommendedProducts = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    // 1. user ke orders nikalo
+    const orders = await orderModel.find({ userId });
+
+    let purchasedProducts = [];
+
+    orders.forEach(order => {
+      order.items.forEach(item => {
+        purchasedProducts.push(item._id);
+      });
+    });
+
+    // 2. purchased products fetch karo
+    const products = await productModel.find({
+      _id: { $in: purchasedProducts }
+    });
+
+    // 3. categories nikalo
+    const categories = products.map(p => p.category);
+
+    // 4. similar products fetch karo
+    const recommended = await productModel.find({
+      category: { $in: categories }
+    }).limit(10);
+
+    res.json({ success: true, recommended });
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+
+
+export {addProduct, listProducts, removeProduct, singleProduct,recommendedProducts}
 
 
 
