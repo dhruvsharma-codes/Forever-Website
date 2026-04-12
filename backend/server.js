@@ -19,7 +19,13 @@ connectCloudinary();
 
 // MIDDLEWARES
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+  origin: "https://forever-website-frontend-amber.vercel.app/",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 
 

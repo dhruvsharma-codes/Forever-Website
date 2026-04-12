@@ -253,7 +253,7 @@ const Hero = () => {
 
                 .hero-right {
                     flex:1; position:relative; overflow:hidden;
-                    min-height:320px;
+                    min-height:320px; max-height:600px;
                 }
                 .hero-right::before {
                     content:''; position:absolute; inset:0;
@@ -303,7 +303,7 @@ const Hero = () => {
                     transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <motion.img
-                        src={assets.hero_img}
+                        src={assets.HeroImgNew}
                         alt="hero"
                         whileHover={{ scale: 1.04 }}
                         transition={{ duration: 0.6, ease: 'easeOut' }}

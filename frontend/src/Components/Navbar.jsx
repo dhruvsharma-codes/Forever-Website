@@ -271,7 +271,7 @@ const Icon = ({ d, d2, extra }) => (
 
 // ── Admin URL — reads from env or defaults to port 5174 ───────────────────────
 // Set VITE_ADMIN_URL=http://localhost:5174 in your frontend .env
-const ADMIN_URL = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5173'
+const ADMIN_URL = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5175'
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false)

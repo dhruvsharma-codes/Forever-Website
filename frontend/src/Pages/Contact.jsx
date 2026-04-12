@@ -252,9 +252,9 @@ const Contact = () => (
                     viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
                 >
                     <p className="contact-store">Our Store</p>
-                    <p className="contact-detail">456 Near Fountain Farm<br />Suite 340, New Delhi, India</p>
+                    <p className="contact-detail">857 Munda Mazra<br />YamunaNagar, Haryana, India</p>
                     <hr className="contact-hr" />
-                    <p className="contact-detail"><span style={{ color: '#C96A42', fontWeight: 600 }}>Phone:</span> +91 9876543210</p>
+                    <p className="contact-detail"><span style={{ color: '#C96A42', fontWeight: 600 }}>Phone:</span> +91 8053103060</p>
                     <p className="contact-detail"><span style={{ color: '#C96A42', fontWeight: 600 }}>Email:</span> forever@shop.com</p>
                     <p className="contact-detail"><span style={{ color: '#C96A42', fontWeight: 600 }}>Hours:</span> Mon–Sat, 9am – 8pm</p>
                     <hr className="contact-hr" />
