@@ -108,10 +108,8 @@ totalAmont += iteminfo.price * cartItems[items][item];
 
     const getProductsData = async() => {
         try {
-            const API = "https://forever-website-delta.vercel.app";
 
-            // const response = await axios.get(backendUrl + '/api/product/list')
-            const response = await axios.get(`${API}/api/product/list`)
+            const response = await axios.get(backendUrl + '/api/product/list')
             
 
             if(response.data.success){
