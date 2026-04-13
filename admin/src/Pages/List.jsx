@@ -1,37 +1,46 @@
-
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { backendUrl, currency } from '../App';
-import { toast } from 'react-toastify';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { backendUrl, currency } from "../App";
+import { toast } from "react-toastify";
 
 const List = ({ token }) => {
-    const [list, setList] = useState([]);
+  const [list, setList] = useState([]);
 
-    const fetchList = async () => {
-        try {
-            const response = await axios.get(backendUrl + "/api/product/list", { headers: { token } });
-            if (response.data.success) setList(response.data.products);
-            else toast.error(response.data.message || "Failed");
-        } catch (error) {
-            toast.error(error.message);
-        }
-    };
+  const fetchList = async () => {
+    try {
+      const response = await axios.get(backendUrl + "/api/product/list", {
+        headers: { token },
+      });
+      if (response.data.success) setList(response.data.products);
+      else toast.error(response.data.message || "Failed");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    const removeProduct = async (id) => {
-        try {
-            const response = await axios.post(backendUrl + '/api/product/remove', { id }, { headers: { token } });
-            if (response.data.success) { toast.success(response.data.message); await fetchList(); }
-            else toast.error(response.data.message);
-        } catch (error) {
-            toast.error(error.message);
-        }
-    };
+  const removeProduct = async (id) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/product/remove",
+        { id },
+        { headers: { token } },
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchList();
+      } else toast.error(response.data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    useEffect(() => { fetchList(); }, []);
+  useEffect(() => {
+    fetchList();
+  }, []);
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .list-page {
                     padding: 2rem;
                     width: 100%;
@@ -179,38 +188,57 @@ const List = ({ token }) => {
                 }
             `}</style>
 
-            <div className='list-page'>
-                <h2 className='list-page-title'>All Products</h2>
-                <p className='list-count'>Showing <span>{list.length}</span> products</p>
+      <div className="list-page">
+        <h2 className="list-page-title">All Products</h2>
+        <p className="list-count">
+          Showing <span>{list.length}</span> products
+        </p>
 
-                <div>
-                    <div className='list-table-header'>
-                        <span>Image</span>
-                        <span>Name</span>
-                        <span>Category</span>
-                        <span>Price</span>
-                        <span style={{ textAlign: 'center' }}>Action</span>
-                    </div>
+        <div>
+          <div className="list-table-header">
+            <span>Image</span>
+            <span>Name</span>
+            <span>Category</span>
+            <span>Price</span>
+            <span style={{ textAlign: "center" }}>Action</span>
+          </div>
 
-                    {list.length === 0 ? (
-                        <div className='list-empty'>No products found. Add some products to get started.</div>
-                    ) : (
-                        list.map((item, index) => (
-                            <div className='list-table-row' key={index}>
-                                <img className='list-product-img' src={item.image[0]} alt={item.name} />
-                                <p className='list-product-name'>{item.name}</p>
-                                <span className='list-category-badge hidden md:inline-block'>{item.category}</span>
-                                <p className='list-product-price hidden md:block'>{currency}{item.price}</p>
-                                <div className='flex md:justify-center'>
-                                    <button onClick={() => removeProduct(item._id)} className='list-delete-btn' title="Remove product">✕</button>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
+          {list.length === 0 ? (
+            <div className="list-empty">
+              No products found. Add some products to get started.
             </div>
-        </>
-    );
+          ) : (
+            list.map((item, index) => (
+              <div className="list-table-row" key={index}>
+                <img
+                  className="list-product-img"
+                  src={item.image[0]}
+                  alt={item.name}
+                />
+                <p className="list-product-name">{item.name}</p>
+                <span className="list-category-badge hidden md:inline-block">
+                  {item.category}
+                </span>
+                <p className="list-product-price hidden md:block">
+                  {currency}
+                  {item.price}
+                </p>
+                <div className="flex md:justify-center">
+                  <button
+                    onClick={() => removeProduct(item._id)}
+                    className="list-delete-btn"
+                    title="Remove product"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default List;

@@ -1,10 +1,10 @@
-import React from 'react'
-import { assets } from '../assets/assets'
+import React from "react";
+import { assets } from "../assets/assets";
 
 const Navbar = ({ setToken }) => {
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .admin-navbar {
                     display: flex;
                     align-items: center;
@@ -62,15 +62,17 @@ const Navbar = ({ setToken }) => {
                 }
             `}</style>
 
-            <div className='admin-navbar'>
-                <img className='admin-navbar-logo' src={assets.logo} alt="logo" />
-                <div className='admin-nav-right'>
-                    <span className='admin-badge'>Admin</span>
-                    <button onClick={() => setToken('')} className='admin-logout-btn'>Log Out</button>
-                </div>
-            </div>
-        </>
-    );
+      <div className="admin-navbar">
+        <img className="admin-navbar-logo" src={assets.logo} alt="logo" />
+        <div className="admin-nav-right">
+          <span className="admin-badge">Admin</span>
+          <button onClick={() => setToken("")} className="admin-logout-btn">
+            Log Out
+          </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Navbar;

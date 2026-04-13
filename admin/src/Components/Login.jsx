@@ -1,34 +1,34 @@
-
-
-import React, { useState } from 'react'
-import axios from "axios"
-import { backendUrl } from '../App';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import axios from "axios";
+import { backendUrl } from "../App";
+import { toast } from "react-toastify";
 
 const Login = ({ setToken }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const onSubmitHandler = async (e) => {
-        try {
-            e.preventDefault();
-            const response = await axios.post(backendUrl + '/api/user/admin', { email, password });
-            
+  const onSubmitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await axios.post(backendUrl + "/api/user/admin", {
+        email,
+        password,
+      });
 
-            if (response.data.success) {
-                setToken(response.data.token);
-            } else {
-                toast.error(response.data.message);
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error(error.message);
-        }
-    };
+      if (response.data.success) {
+        setToken(response.data.token);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .admin-login-page {
                     display: flex;
                     align-items: center;
@@ -142,31 +142,47 @@ const Login = ({ setToken }) => {
                 }
             `}</style>
 
-            <div className='admin-login-page'>
-                <div className='admin-login-card'>
-                    <div className='admin-login-header'>
-                        <span className='admin-login-badge'>Admin Access</span>
-                        <h1 className='admin-login-title'>Welcome Back</h1>
-                        <p className='admin-login-subtitle'>Sign in to manage your store</p>
-                    </div>
+      <div className="admin-login-page">
+        <div className="admin-login-card">
+          <div className="admin-login-header">
+            <span className="admin-login-badge">Admin Access</span>
+            <h1 className="admin-login-title">Welcome Back</h1>
+            <p className="admin-login-subtitle">Sign in to manage your store</p>
+          </div>
 
-                    <hr className='admin-divider' />
+          <hr className="admin-divider" />
 
-                    <form onSubmit={onSubmitHandler}>
-                        <div className='admin-input-group'>
-                            <label className='admin-input-label'>Email Address</label>
-                            <input onChange={(e) => setEmail(e.target.value)} value={email} className='admin-input' type="email" placeholder='your@email.com' required />
-                        </div>
-                        <div className='admin-input-group'>
-                            <label className='admin-input-label'>Password</label>
-                            <input onChange={(e) => setPassword(e.target.value)} value={password} className='admin-input' type="password" placeholder='Enter your password' required />
-                        </div>
-                        <button className='admin-login-btn' type='submit'>Sign In →</button>
-                    </form>
-                </div>
+          <form onSubmit={onSubmitHandler}>
+            <div className="admin-input-group">
+              <label className="admin-input-label">Email Address</label>
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                className="admin-input"
+                type="email"
+                placeholder="your@email.com"
+                required
+              />
             </div>
-        </>
-    );
+            <div className="admin-input-group">
+              <label className="admin-input-label">Password</label>
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                className="admin-input"
+                type="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button className="admin-login-btn" type="submit">
+              Sign In →
+            </button>
+          </form>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Login;

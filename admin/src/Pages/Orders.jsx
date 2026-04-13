@@ -1,46 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { backendUrl, currency } from '../App';
-import { assets } from '../assets/assets';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { backendUrl, currency } from "../App";
+import { assets } from "../assets/assets";
 
 const Orders = ({ token }) => {
-    const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-    const fetchOrders = async () => {
-        if (!token) return null;
-        try {
-            const response = await axios.post(backendUrl + '/api/order/list', {}, { headers: { token } });
-            if (response.data.success) setOrders(response.data.orders);
-            else toast.error(response.data.message);
-        } catch (error) {
-            toast.error(error.message);
-        }
-    };
+  const fetchOrders = async () => {
+    if (!token) return null;
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/order/list",
+        {},
+        { headers: { token } },
+      );
+      if (response.data.success) setOrders(response.data.orders);
+      else toast.error(response.data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    const statusHandler = async (event, orderId) => {
-        try {
-            const response = await axios.post(backendUrl + '/api/order/status', { orderId, status: event.target.value }, { headers: { token } });
-            if (response.data.success) await fetchOrders();
-        } catch (error) {
-            toast.error(error.message);
-        }
-    };
+  const statusHandler = async (event, orderId) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/order/status",
+        { orderId, status: event.target.value },
+        { headers: { token } },
+      );
+      if (response.data.success) await fetchOrders();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    useEffect(() => { fetchOrders(); }, [token]);
+  useEffect(() => {
+    fetchOrders();
+  }, [token]);
 
-    const getStatusColor = (status) => {
-        const s = (status || '').toLowerCase();
-        if (s.includes('delivered')) return { bg: '#A8B5A0', color: '#FFFDF9' };
-        if (s.includes('out for')) return { bg: '#D4755B', color: '#FFFDF9' };
-        if (s.includes('ship')) return { bg: '#E8845A', color: '#FFFDF9' };
-        if (s.includes('packing')) return { bg: '#C8A892', color: '#FFFDF9' };
-        return { bg: '#E8D5C4', color: '#8B5A4A' };
-    };
+  const getStatusColor = (status) => {
+    const s = (status || "").toLowerCase();
+    if (s.includes("delivered")) return { bg: "#A8B5A0", color: "#FFFDF9" };
+    if (s.includes("out for")) return { bg: "#D4755B", color: "#FFFDF9" };
+    if (s.includes("ship")) return { bg: "#E8845A", color: "#FFFDF9" };
+    if (s.includes("packing")) return { bg: "#C8A892", color: "#FFFDF9" };
+    return { bg: "#E8D5C4", color: "#8B5A4A" };
+  };
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .admin-orders-page {
                     padding: 2rem;
                     width: 100%;
@@ -217,78 +227,107 @@ const Orders = ({ token }) => {
                 }
             `}</style>
 
-            <div className='admin-orders-page'>
-                <h2 className='admin-orders-title'>Orders</h2>
+      <div className="admin-orders-page">
+        <h2 className="admin-orders-title">Orders</h2>
 
+        <div>
+          {orders.map((order, index) => (
+            <div className="order-card" key={index}>
+              {/* ICON */}
+              <div className="order-parcel-icon">
+                <img src={assets.parcel_icon} alt="parcel" />
+              </div>
+
+              <div className="mobile-order-grid">
+                {/* ITEMS + ADDRESS */}
                 <div>
-                    {orders.map((order, index) => (
-                        <div className='order-card' key={index}>
-                            {/* ICON */}
-                            <div className='order-parcel-icon'>
-                                <img src={assets.parcel_icon} alt="parcel" />
-                            </div>
-
-                            <div className='mobile-order-grid'>
-                                {/* ITEMS + ADDRESS */}
-                                <div>
-                                    <div className='order-items-list'>
-                                        {order.items.map((item, i) => (
-                                            <p className='order-item-text' key={i}>
-                                                {item.name} × {item.quantity}
-                                                <span className='order-item-size'>{item.size}</span>
-                                                {i < order.items.length - 1 && ','}
-                                            </p>
-                                        ))}
-                                    </div>
-                                    <p className='order-customer-name'>{order.address.firstName} {order.address.lastName}</p>
-                                    <div className='order-address'>
-                                        <p>{order.address.street},</p>
-                                        <p>{order.address.city}, {order.address.state}, {order.address.country} {order.address.zipcode}</p>
-                                    </div>
-                                    <p className='order-phone'>{order.address.phone}</p>
-                                </div>
-
-                                {/* META */}
-                                <div>
-                                    <p className='order-meta-item'><strong>Items:</strong> {order.items.length}</p>
-                                    <p className='order-meta-item'><strong>Method:</strong> {order.paymentMethod}</p>
-                                    <p className='order-meta-item'>
-                                        <strong>Payment:</strong>{' '}
-                                        <span className={order.payment ? 'payment-done' : 'payment-pending'}>
-                                            {order.payment ? '✓ Done' : '⏳ Pending'}
-                                        </span>
-                                    </p>
-                                    <p className='order-meta-item'><strong>Date:</strong> {new Date(order.date).toLocaleDateString()}</p>
-                                </div>
-
-                                {/* AMOUNT */}
-                                <p className='order-amount'>{currency}{order.amount}</p>
-
-                                {/* STATUS */}
-                                <select
-                                    onChange={(e) => statusHandler(e, order._id)}
-                                    value={order.status}
-                                    className='status-select'
-                                >
-                                    <option value="Order Placed">Order Placed</option>
-                                    <option value="Packing">Packing</option>
-                                    <option value="Ship">Ship</option>
-                                    <option value="Out for Delivery">Out for Delivery</option>
-                                    <option value="Delivered">Delivered</option>
-                                </select>
-                            </div>
-                        </div>
+                  <div className="order-items-list">
+                    {order.items.map((item, i) => (
+                      <p className="order-item-text" key={i}>
+                        {item.name} × {item.quantity}
+                        <span className="order-item-size">{item.size}</span>
+                        {i < order.items.length - 1 && ","}
+                      </p>
                     ))}
-
-                    {orders.length === 0 && (
-                        <div style={{ textAlign: 'center', padding: '4rem', color: '#A8B5A0', background: '#FFFDF9', border: '1px solid #E8D5C4', borderRadius: '14px', fontSize: '0.88rem' }}>
-                            No orders found yet.
-                        </div>
-                    )}
+                  </div>
+                  <p className="order-customer-name">
+                    {order.address.firstName} {order.address.lastName}
+                  </p>
+                  <div className="order-address">
+                    <p>{order.address.street},</p>
+                    <p>
+                      {order.address.city}, {order.address.state},{" "}
+                      {order.address.country} {order.address.zipcode}
+                    </p>
+                  </div>
+                  <p className="order-phone">{order.address.phone}</p>
                 </div>
+
+                {/* META */}
+                <div>
+                  <p className="order-meta-item">
+                    <strong>Items:</strong> {order.items.length}
+                  </p>
+                  <p className="order-meta-item">
+                    <strong>Method:</strong> {order.paymentMethod}
+                  </p>
+                  <p className="order-meta-item">
+                    <strong>Payment:</strong>{" "}
+                    <span
+                      className={
+                        order.payment ? "payment-done" : "payment-pending"
+                      }
+                    >
+                      {order.payment ? "✓ Done" : "⏳ Pending"}
+                    </span>
+                  </p>
+                  <p className="order-meta-item">
+                    <strong>Date:</strong>{" "}
+                    {new Date(order.date).toLocaleDateString()}
+                  </p>
+                </div>
+
+                {/* AMOUNT */}
+                <p className="order-amount">
+                  {currency}
+                  {order.amount}
+                </p>
+
+                {/* STATUS */}
+                <select
+                  onChange={(e) => statusHandler(e, order._id)}
+                  value={order.status}
+                  className="status-select"
+                >
+                  <option value="Order Placed">Order Placed</option>
+                  <option value="Packing">Packing</option>
+                  <option value="Ship">Ship</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
             </div>
-        </>
-    );
+          ))}
+
+          {orders.length === 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "4rem",
+                color: "#A8B5A0",
+                background: "#FFFDF9",
+                border: "1px solid #E8D5C4",
+                borderRadius: "14px",
+                fontSize: "0.88rem",
+              }}
+            >
+              No orders found yet.
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Orders;

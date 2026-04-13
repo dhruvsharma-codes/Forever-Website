@@ -1,11 +1,11 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { assets } from '../assets/assets'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { assets } from "../assets/assets";
 
 const Sidebar = () => {
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .admin-sidebar {
                     width: 200px;
                     min-height: 100vh;
@@ -88,29 +88,44 @@ const Sidebar = () => {
                 }
             `}</style>
 
-            <div className='admin-sidebar'>
-                <p className='sidebar-label'>Menu</p>
-                <div className='sidebar-nav'>
-                    <NavLink className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} to="/add">
-                        <img src={assets.add_icon} alt="add" />
-                        <span className='hidden md:block'>Add Items</span>
-                    </NavLink>
+      <div className="admin-sidebar">
+        <p className="sidebar-label">Menu</p>
+        <div className="sidebar-nav">
+          <NavLink
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+            to="/add"
+          >
+            <img src={assets.add_icon} alt="add" />
+            <span className="hidden md:block">Add Items</span>
+          </NavLink>
 
-                    <hr className='sidebar-divider' />
+          <hr className="sidebar-divider" />
 
-                    <NavLink className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} to="/list">
-                        <img src={assets.order_icon} alt="list" />
-                        <span className='hidden md:block'>List Items</span>
-                    </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+            to="/list"
+          >
+            <img src={assets.order_icon} alt="list" />
+            <span className="hidden md:block">List Items</span>
+          </NavLink>
 
-                    <NavLink className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} to="/orders">
-                        <img src={assets.order_icon} alt="orders" />
-                        <span className='hidden md:block'>Orders</span>
-                    </NavLink>
-                </div>
-            </div>
-        </>
-    );
+          <NavLink
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+            to="/orders"
+          >
+            <img src={assets.order_icon} alt="orders" />
+            <span className="hidden md:block">Orders</span>
+          </NavLink>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Sidebar;

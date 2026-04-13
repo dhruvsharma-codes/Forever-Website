@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const ContactForm = () => {
-
- const [result, setResult] = useState("");
+  const [result, setResult] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -14,7 +13,7 @@ const ContactForm = () => {
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData
+      body: formData,
     });
 
     const data = await response.json();
@@ -109,7 +108,7 @@ const ContactForm = () => {
           >
             Send Message
           </motion.button>
-           <span>{result}</span>
+          <span>{result}</span>
         </form>
       </motion.div>
     </>

@@ -1,58 +1,76 @@
-import React, { useState } from 'react'
-import { assets } from '../assets/assets'
-import axios from 'axios';
-import { backendUrl } from '../App';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { assets } from "../assets/assets";
+import axios from "axios";
+import { backendUrl } from "../App";
+import { toast } from "react-toastify";
 
 const Add = ({ token }) => {
-    const [image1, setImage1] = useState(false);
-    const [image2, setImage2] = useState(false);
-    const [image3, setImage3] = useState(false);
-    const [image4, setImage4] = useState(false);
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-    const [category, setCategory] = useState("Men");
-    const [subcategory, setSubCategory] = useState("Topwear");
-    const [bestseller, setBestseller] = useState(false);
-    const [sizes, setSizes] = useState([]);
+  const [image1, setImage1] = useState(false);
+  const [image2, setImage2] = useState(false);
+  const [image3, setImage3] = useState(false);
+  const [image4, setImage4] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("Men");
+  const [subcategory, setSubCategory] = useState("Topwear");
+  const [bestseller, setBestseller] = useState(false);
+  const [sizes, setSizes] = useState([]);
 
-    const onSubmitHandler = async (e) => {
-        e.preventDefault();
-        try {
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("description", description);
-            formData.append("price", price);
-            formData.append("category", category);
-            formData.append("subCategory", subcategory);
-            formData.append("bestseller", bestseller);
-            formData.append("sizes", JSON.stringify(sizes));
-            image1 && formData.append("image1", image1);
-            image2 && formData.append("image2", image2);
-            image3 && formData.append("image3", image3);
-            image4 && formData.append("image4", image4);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+      formData.append("subCategory", subcategory);
+      formData.append("bestseller", bestseller);
+      formData.append("sizes", JSON.stringify(sizes));
+      image1 && formData.append("image1", image1);
+      image2 && formData.append("image2", image2);
+      image3 && formData.append("image3", image3);
+      image4 && formData.append("image4", image4);
 
-            const response = await axios.post(backendUrl + "/api/product/add", formData, { headers: { token } });
-            if (response.data.success) {
-                toast.success(response.data.message || "Product Added Successfully");
-                setName(""); setDescription(""); setPrice("");
-                setCategory("Men"); setSubCategory("Topwear");
-                setBestseller(false); setSizes([]);
-                setImage1(false); setImage2(false); setImage3(false); setImage4(false);
-            } else {
-                toast.error(response.data.message || "Failed to add product");
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || error.message || "Something went wrong");
-        }
-    };
+      const response = await axios.post(
+        backendUrl + "/api/product/add",
+        formData,
+        { headers: { token } },
+      );
+      if (response.data.success) {
+        toast.success(response.data.message || "Product Added Successfully");
+        setName("");
+        setDescription("");
+        setPrice("");
+        setCategory("Men");
+        setSubCategory("Topwear");
+        setBestseller(false);
+        setSizes([]);
+        setImage1(false);
+        setImage2(false);
+        setImage3(false);
+        setImage4(false);
+      } else {
+        toast.error(response.data.message || "Failed to add product");
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
+      );
+    }
+  };
 
-    const toggleSize = (s) => setSizes(prev => prev.includes(s) ? prev.filter(i => i !== s) : [...prev, s]);
+  const toggleSize = (s) =>
+    setSizes((prev) =>
+      prev.includes(s) ? prev.filter((i) => i !== s) : [...prev, s],
+    );
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
                 .add-page {
                     padding: 2rem;
                     max-width: 760px;
@@ -253,83 +271,140 @@ const Add = ({ token }) => {
                 }
             `}</style>
 
-            <form onSubmit={onSubmitHandler} className='add-page flex flex-col gap-5'>
-                <h2 className='add-page-title'>Add New Product</h2>
+      <form onSubmit={onSubmitHandler} className="add-page flex flex-col gap-5">
+        <h2 className="add-page-title">Add New Product</h2>
 
-                {/* IMAGE UPLOAD */}
-                <div>
-                    <label className='form-label'>Product Images</label>
-                    <div className='upload-grid'>
-                        {[{ state: image1, setter: setImage1, id: 'image1' },
-                          { state: image2, setter: setImage2, id: 'image2' },
-                          { state: image3, setter: setImage3, id: 'image3' },
-                          { state: image4, setter: setImage4, id: 'image4' }].map(({ state, setter, id }) => (
-                            <label key={id} htmlFor={id} className='upload-box'>
-                                <img src={!state ? assets.upload_area : URL.createObjectURL(state)} alt="upload" />
-                                <input onChange={(e) => setter(e.target.files[0])} type="file" id={id} hidden />
-                            </label>
-                        ))}
-                    </div>
-                </div>
+        {/* IMAGE UPLOAD */}
+        <div>
+          <label className="form-label">Product Images</label>
+          <div className="upload-grid">
+            {[
+              { state: image1, setter: setImage1, id: "image1" },
+              { state: image2, setter: setImage2, id: "image2" },
+              { state: image3, setter: setImage3, id: "image3" },
+              { state: image4, setter: setImage4, id: "image4" },
+            ].map(({ state, setter, id }) => (
+              <label key={id} htmlFor={id} className="upload-box">
+                <img
+                  src={!state ? assets.upload_area : URL.createObjectURL(state)}
+                  alt="upload"
+                />
+                <input
+                  onChange={(e) => setter(e.target.files[0])}
+                  type="file"
+                  id={id}
+                  hidden
+                />
+              </label>
+            ))}
+          </div>
+        </div>
 
-                {/* NAME */}
-                <div>
-                    <label className='form-label'>Product Name</label>
-                    <input onChange={(e) => setName(e.target.value)} value={name} className='form-input' style={{ maxWidth: '500px' }} type="text" placeholder='e.g. Classic Linen Shirt' required />
-                </div>
+        {/* NAME */}
+        <div>
+          <label className="form-label">Product Name</label>
+          <input
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            className="form-input"
+            style={{ maxWidth: "500px" }}
+            type="text"
+            placeholder="e.g. Classic Linen Shirt"
+            required
+          />
+        </div>
 
-                {/* DESCRIPTION */}
-                <div>
-                    <label className='form-label'>Product Description</label>
-                    <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='form-textarea' style={{ maxWidth: '500px' }} placeholder='Describe the product...' required />
-                </div>
+        {/* DESCRIPTION */}
+        <div>
+          <label className="form-label">Product Description</label>
+          <textarea
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
+            className="form-textarea"
+            style={{ maxWidth: "500px" }}
+            placeholder="Describe the product..."
+            required
+          />
+        </div>
 
-                {/* CATEGORY / SUBCATEGORY / PRICE */}
-                <div className='flex flex-col gap-4 sm:flex-row sm:gap-6'>
-                    <div style={{ minWidth: '150px' }}>
-                        <label className='form-label'>Category</label>
-                        <select onChange={(e) => setCategory(e.target.value)} value={category} className='form-select'>
-                            <option value="Men">Men</option>
-                            <option value="Women">Women</option>
-                            <option value="Kids">Kids</option>
-                        </select>
-                    </div>
-                    <div style={{ minWidth: '150px' }}>
-                        <label className='form-label'>Sub-Category</label>
-                        <select onChange={(e) => setSubCategory(e.target.value)} value={subcategory} className='form-select'>
-                            <option value="Topwear">Topwear</option>
-                            <option value="Bottomwear">Bottomwear</option>
-                            <option value="Winterwear">Winterwear</option>
-                        </select>
-                    </div>
-                    <div style={{ minWidth: '120px' }}>
-                        <label className='form-label'>Price (₹)</label>
-                        <input onChange={(e) => setPrice(e.target.value)} value={price} className='form-input' type="number" placeholder='250' required />
-                    </div>
-                </div>
+        {/* CATEGORY / SUBCATEGORY / PRICE */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+          <div style={{ minWidth: "150px" }}>
+            <label className="form-label">Category</label>
+            <select
+              onChange={(e) => setCategory(e.target.value)}
+              value={category}
+              className="form-select"
+            >
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
+              <option value="Kids">Kids</option>
+            </select>
+          </div>
+          <div style={{ minWidth: "150px" }}>
+            <label className="form-label">Sub-Category</label>
+            <select
+              onChange={(e) => setSubCategory(e.target.value)}
+              value={subcategory}
+              className="form-select"
+            >
+              <option value="Topwear">Topwear</option>
+              <option value="Bottomwear">Bottomwear</option>
+              <option value="Winterwear">Winterwear</option>
+            </select>
+          </div>
+          <div style={{ minWidth: "120px" }}>
+            <label className="form-label">Price (₹)</label>
+            <input
+              onChange={(e) => setPrice(e.target.value)}
+              value={price}
+              className="form-input"
+              type="number"
+              placeholder="250"
+              required
+            />
+          </div>
+        </div>
 
-                {/* SIZES */}
-                <div>
-                    <label className='form-label'>Available Sizes</label>
-                    <div className='flex gap-3 flex-wrap'>
-                        {['S', 'M', 'L', 'XL', 'XXL'].map(s => (
-                            <div key={s} onClick={() => toggleSize(s)} className={`size-btn ${sizes.includes(s) ? 'active' : ''}`}>{s}</div>
-                        ))}
-                    </div>
-                </div>
+        {/* SIZES */}
+        <div>
+          <label className="form-label">Available Sizes</label>
+          <div className="flex gap-3 flex-wrap">
+            {["S", "M", "L", "XL", "XXL"].map((s) => (
+              <div
+                key={s}
+                onClick={() => toggleSize(s)}
+                className={`size-btn ${sizes.includes(s) ? "active" : ""}`}
+              >
+                {s}
+              </div>
+            ))}
+          </div>
+        </div>
 
-                {/* BESTSELLER */}
-                <div className='bestseller-row' style={{ maxWidth: '260px' }}>
-                    <input onChange={() => setBestseller(prev => !prev)} checked={bestseller} type="checkbox" id='bestseller' className='bestseller-checkbox' />
-                    <label className='bestseller-label' htmlFor="bestseller"> Mark as Bestseller</label>
-                </div>
+        {/* BESTSELLER */}
+        <div className="bestseller-row" style={{ maxWidth: "260px" }}>
+          <input
+            onChange={() => setBestseller((prev) => !prev)}
+            checked={bestseller}
+            type="checkbox"
+            id="bestseller"
+            className="bestseller-checkbox"
+          />
+          <label className="bestseller-label" htmlFor="bestseller">
+            {" "}
+            Mark as Bestseller
+          </label>
+        </div>
 
-                <div>
-                    <button className='add-submit-btn' type='submit'>Add Product</button>
-                </div>
-            </form>
-        </>
-    );
+        <div>
+          <button className="add-submit-btn" type="submit">
+            Add Product
+          </button>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export default Add;
