@@ -240,7 +240,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Handle ALL preflight OPTIONS requests — must be before routes
-// app.options('/*', cors(corsOptions));
+app.options('/*', cors(corsOptions));
 
 // ─── Body parser ─────────────────────────────────────────────────────────────
 app.use(express.json());
