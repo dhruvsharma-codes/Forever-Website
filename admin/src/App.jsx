@@ -80,7 +80,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // ─── FIX: strip trailing slash so URLs never become //api/... ────────────────
-const rawUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'
+const rawUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 export const backendUrl = rawUrl.replace(/\/$/, '')   // remove trailing slash if present
 
 export const currency = '₹'

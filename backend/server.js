@@ -136,7 +136,7 @@ import orderRouter from './routes/orderRoute.js';
 import recommendationRouter from './routes/recommendationRoute.js';
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
 connectDB();
 connectCloudinary();
