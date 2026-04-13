@@ -8,8 +8,8 @@ import Orders from './Pages/Orders'
 import Login from './Components/Login'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// export const backendUrl = import.meta.env.VITE_BACKEND_URL
-export const backendUrl = 'https://forever-website-admin-coral.vercel.app/'
+export const backendUrl = import.meta.env.VITE_BACKEND_URL
+// export const backendUrl = 'https://forever-website-admin-coral.vercel.app/'
 export const currency = '₹'
 
 const App = () => {
