@@ -17,6 +17,7 @@ import Verify from './Pages/Verify'
 import ProfilePage from './Pages/ProfilePage'
 import AIRecommendations from './Pages/AiRecommendation'
 import SummerSale from './Pages/SummerSale'
+import ShoppingAssistant from './Components/ShoppingAssistant'
 
 
 const App = () => {
@@ -39,8 +40,8 @@ const App = () => {
         <Route path='/profile' element={<ProfilePage />} />
 <Route path='/ai-recommendations' element={<AIRecommendations />} />
 <Route path='/summer-sale' element={<SummerSale />} />
-
       </Routes>
+<ShoppingAssistant/>
       <Footer/>
     </div>
   )
