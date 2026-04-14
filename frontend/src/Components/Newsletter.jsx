@@ -1,14 +1,37 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from "emailjs-com";
 
 const Newsletter = () => {
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState("");
 
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   setSubmitted(true);
+  // };
+
+
   const onSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  e.preventDefault();
+  
+
+  emailjs.send(
+    "service_sapjsac",     // EmailJS service id
+    "template_qeoeczs",    // template id
+    {
+      user_email: email   // jo user ne input me dala
+    },
+    "lBDdwvZ7SzXzAp8Rt"      // public key
+  )
+  .then(() => {
+    setSubmitted(true);   // success hone ke baad UI change
+  })
+  .catch((err) => {
+    console.error(err);
+    alert("Email send nahi hua ❌");
+  });
+};
 
   return (
     <section style={{ margin: "3rem 0" }}>
@@ -143,7 +166,7 @@ const Newsletter = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
-              🎉 You're in! Check your inbox for the 20% off code.
+              🎉 You're in! Check your inbox.
             </motion.p>
           )}
         </motion.div>

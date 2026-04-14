@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Title from "../Components/Title";
 
 // Categories that get 10% off
-const SALE_CATEGORIES = ["Bottomwear", "Winterwear"];
+const SALE_CATEGORIES = ["Bottomwear","Topwear"];
 const DISCOUNT = 0.1;
 
 // Discounted Item Card — shows original + discounted price
