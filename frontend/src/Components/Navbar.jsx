@@ -227,7 +227,7 @@ const Navbar = () => {
       <style>{`
                 :root{--clr-cream:#F7EFE6;--clr-sand:#EDD8C4;--clr-terra:#C96A42;--clr-terra-dk:#A3512F;--clr-brown:#7A4A38;--clr-deep:#3D2318;--clr-sage:#98A98E;}
                 .nb-root{background:var(--clr-cream);border-bottom:2px solid var(--clr-sand);padding:0 2.5rem;position:sticky;top:0;z-index:200;transition:box-shadow 0.3s,background 0.3s;}
-                .nb-root.nb-scrolled{box-shadow:0 4px 20px rgba(61,35,24,0.12);background:rgba(247,239,230,0.97);backdrop-filter:blur(8px);}
+                .nb-root.nb-scrolled{box-shadow:0 4px 20px rgba(61,35,24,0.12);background:rgba(247,239,230,0.97);backdrop-filter:blur(80px);}
                 .nb-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;}
                 .nb-menu{display:none;gap:1.8rem;list-style:none;margin:0;padding:0;}
                 @media(min-width:640px){.nb-menu{display:flex;}}
