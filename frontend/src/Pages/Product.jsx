@@ -466,7 +466,7 @@ const Product = () => {
                             )}
                             <AnimatePresence mode="wait">
                                 <motion.img key={image} src={image} alt="product"
-                                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                                    style={{ width: '100%', height: '100%', display: 'block' }}
                                     initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
                                     transition={{ duration: 0.3 }} />
                             </AnimatePresence>
