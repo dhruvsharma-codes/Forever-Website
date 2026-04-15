@@ -101,6 +101,16 @@ const Sidebar = () => {
             <span className="hidden md:block">Add Items</span>
           </NavLink>
 
+          <NavLink
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+            to="/ai-assistant"
+          >
+            <img src={assets.add_icon} alt="add" />
+            <span className="hidden md:block">AI Assistant</span>
+          </NavLink>
+
           <hr className="sidebar-divider" />
 
           <NavLink

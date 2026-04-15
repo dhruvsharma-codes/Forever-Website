@@ -8,6 +8,7 @@ import Orders from "./pages/Orders";
 import Login from "./Components/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AIAdminAssistant from "./Pages/AIAdminAssistant";
 
 // ─── FIX: strip trailing slash so URLs never become //api/... ────────────────
 const rawUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
+                <Route path="/ai-assistant" element={<AIAdminAssistant />} />
               </Routes>
             </div>
           </div>
