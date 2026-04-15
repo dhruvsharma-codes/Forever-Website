@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './Pages/Home'
 import Collection from './Pages/Collection'
@@ -18,9 +18,11 @@ import ProfilePage from './Pages/ProfilePage'
 import AIRecommendations from './Pages/AiRecommendation'
 import SummerSale from './Pages/SummerSale'
 import ShoppingAssistant from './Components/ShoppingAssistant'
+import { ShopContext } from './Context/ShopContext'
 
 
 const App = () => {
+  const {token} = useContext(ShopContext)
   return (
     <div className='app px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
       <ToastContainer/>
@@ -38,10 +40,14 @@ const App = () => {
         <Route path='/orders' element={<Orders/>} />
         <Route path='/verify' element={<Verify/>} />
         <Route path='/profile' element={<ProfilePage />} />
+        
 <Route path='/ai-recommendations' element={<AIRecommendations />} />
+       
 <Route path='/summer-sale' element={<SummerSale />} />
       </Routes>
+      {token && (
 <ShoppingAssistant/>
+      )}
       <Footer/>
     </div>
   )
