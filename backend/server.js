@@ -19,7 +19,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
-  "https://forever-website-olive.vercel.app/",
+  "https://forever-website-olive.vercel.app",
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -36,7 +36,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(cors());
+// app.use(cors());
 
 app.use(express.json());
 
