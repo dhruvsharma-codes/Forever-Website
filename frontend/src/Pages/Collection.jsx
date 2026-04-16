@@ -219,7 +219,7 @@ const Collection = () => {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))",
+                gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))",
                 gap: "1rem",
               }}
             >
@@ -267,3 +267,6 @@ const Collection = () => {
 };
 
 export default Collection;
+
+
+
