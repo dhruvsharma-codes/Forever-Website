@@ -17,7 +17,7 @@ Given a product description, return ONLY valid JSON (no markdown, no explanation
   "subcategory": "Topwear" or "Bottomwear" or "Winterwear",
   "bestseller": true or false (boolean),
   "sizes": array subset of ["S","M","L","XL","XXL"] that makes sense for the product,
-  "image_query": "concise 4-6 word pexels image search query for realistic product photo"
+  "image_query": "concise 2-3 word pexels image search query for realistic product photo the product photo should be similar"
 }
 Return ONLY the JSON object. No backticks. No extra text. No explanation.`;
 
