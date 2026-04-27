@@ -144,7 +144,7 @@ const Item = ({ id, image, name, price }) => {
       >
         {/* Image container */}
         <div className="product-card-img">
-          <img src={image[0]} alt={name} loading="lazy" />
+          <img src={image[0]} alt={name} loading="lazy" className="h-full" />
 
           {/* Badges */}
           <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
