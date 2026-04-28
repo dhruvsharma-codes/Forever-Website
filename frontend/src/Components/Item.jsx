@@ -136,7 +136,7 @@ const Item = ({ id, image, name, price }) => {
   const discountedPrice = product ? getDiscountedPrice(product) : price
 
   return (
-    <Link to={`/product/${id}`} style={{ textDecoration: 'none', display: 'block' }}>
+    <Link to={`/product/${id}`} style={{ textDecoration: 'none', display: 'block' }} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
       <motion.article
         className="product-card"
         whileHover={{ y: -6 }}

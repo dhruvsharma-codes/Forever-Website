@@ -54,30 +54,30 @@ const addProduct = async (req, res) => {
 };
 
 // Route to show products lists
-// const listProducts = async (req, res) => {
-//   try {
-//     const products = await productModel.find({});
-//     res.json({ success: true, products });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
 const listProducts = async (req, res) => {
   try {
-    const page = Number(req.query.page) || 1;
-    const limit = 10;
-
-    const products = await productModel
-      .find({})
-      .skip((page - 1) * limit)
-      .limit(limit);
-
+    const products = await productModel.find({});
     res.json({ success: true, products });
   } catch (error) {
+    console.log(error);
     res.json({ success: false, message: error.message });
   }
 };
+// const listProducts = async (req, res) => {
+//   try {
+//     const page = Number(req.query.page) || 1;
+//     const limit = 10;
+
+//     const products = await productModel
+//       .find({})
+//       .skip((page - 1) * limit)
+//       .limit(limit);
+
+//     res.json({ success: true, products });
+//   } catch (error) {
+//     res.json({ success: false, message: error.message });
+//   }
+// };
 
 // Route to remove products
 const removeProduct = async (req, res) => {
