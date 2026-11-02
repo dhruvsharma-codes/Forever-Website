@@ -683,8 +683,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 // ─── Groq config ──────────────────────────────────────────────────────────────
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
 const GROQ_MODEL   = 'llama-3.3-70b-versatile'
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || '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'
-
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY
 // ─── Safe page routes (NEVER admin) ──────────────────────────────────────────
 const PAGE_ROUTES = {
     home:         '/',

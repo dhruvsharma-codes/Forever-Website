@@ -290,6 +290,7 @@ import Title from "../Components/Title";
 import Item from "../Components/Item";
 import { motion, AnimatePresence } from "framer-motion";
 
+
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
@@ -596,6 +597,7 @@ const Collection = () => {
               )}
             </motion.div>
           )}
+
         </div>
       </div>
     </>

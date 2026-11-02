@@ -132,7 +132,7 @@ Respond with ONLY this JSON (no markdown, no extra text):
 
     // 6. Call Gemini — gemini-1.5-flash is the correct model name
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       generationConfig: {
         temperature: 0.3,
         maxOutputTokens: 512,

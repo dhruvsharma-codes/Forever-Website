@@ -932,6 +932,8 @@ const Navbar = () => {
     { label: 'Orders', emoji: '📦', onClick: () => { setDropdownOpen(false); navigate('/orders') } },
     { label: 'Order Tracker', emoji: '🕐', badge: 'Live', badgeLive: true, onClick: () => { setDropdownOpen(false); openTracker() } },
     { label: 'AI Picks', emoji: '✨', onClick: () => { setDropdownOpen(false); navigate('/ai-recommendations') } },
+    { label: 'Style by Skin Tone', emoji: '🎨',
+  onClick: () => { setDropdownOpen(false); navigate('/skin-tone') } },
     { label: 'Admin Panel', emoji: '⚙️', badge: '↗', isAdmin: true, onClick: () => { setDropdownOpen(false); openAdminPanel() } },
     { label: 'Logout', emoji: '🚪', isDanger: true, onClick: logout },
   ]

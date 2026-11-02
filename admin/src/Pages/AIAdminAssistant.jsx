@@ -4,8 +4,8 @@ import { backendUrl } from "../App";
 const PEXELS_API_KEY = "wepMbzG4bEAcIzfdhFd44YuilJPsAEF62tTWoBYQh64fz0E3igZEPHmq";
 
 // 🔑 Gemini API config
-const GEMINI_API_KEY = "AIzaSyDYzGjWlYnRkaa-GmyoaREEl_AxVElOHMM";
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_API_KEY = "AIzaSyBKlR0lUjGge7poIGR8SeqoFZhle0yw_Fw";
+const GEMINI_MODEL = "gemini-2.5-flash-lite";
 
 const systemPrompt = `You are an AI product generator for an Indian ecommerce clothing store.
 Given a product description, return ONLY valid JSON (no markdown, no explanation) with these exact fields:

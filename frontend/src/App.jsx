@@ -83,6 +83,7 @@ import Footer from './Components/Footer'
 import SearchBar from './Components/SearchBar'
 import { ToastContainer } from 'react-toastify'
 import { ShopContext } from './Context/ShopContext'
+import SkinToneAdvisor from './Pages/SkinToneAdvisor'
 
 // ── Lazy-loaded pages ──────────────────────────────────────────────────────
 const Home            = lazy(() => import('./Pages/Home'))
@@ -164,6 +165,7 @@ const App = () => {
 
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          <Route path='/skin-tone' element={<SkinToneAdvisor />} />
           <Route path='/'                   element={<Home />} />
           <Route path='/collection'         element={<Collection />} />
           <Route path='/about'              element={<About />} />
