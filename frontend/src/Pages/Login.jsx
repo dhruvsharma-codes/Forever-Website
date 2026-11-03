@@ -299,350 +299,521 @@
 
 
 
+// import React, { useContext, useEffect, useState } from "react";
+// import { ShopContext } from "../Context/ShopContext";
+// import axios from "axios";
+// import { toast } from "react-toastify";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// const EyeIcon = ({ show }) => show ? (
+//   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+//     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+//     <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+//     <line x1="1" y1="1" x2="23" y2="23" />
+//   </svg>
+// ) : (
+//   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+//     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
+//   </svg>
+// )
+
+// const Login = () => {
+//   const [mode, setMode] = useState("Login");
+//   const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [loading, setLoading] = useState(false);
+
+//   const onSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     try {
+//       const endpoint = mode === "Sign Up" ? "/api/user/register" : "/api/user/login";
+//       const payload = mode === "Sign Up" ? { name, email, password } : { email, password };
+//       const res = await axios.post(backendUrl + endpoint, payload);
+//       if (res.data.success) {
+//         setToken(res.data.token);
+//         localStorage.setItem("token", res.data.token);
+//         toast.success(mode === "Sign Up" ? "Welcome to Forever! 🎉" : "Welcome back! 👋");
+//       } else {
+//         toast.error(res.data.message);
+//       }
+//     } catch (err) {
+//       toast.error(err.response?.data?.message || err.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => { if (token) navigate("/"); }, [token]);
+//   useEffect(() => {
+//     const saved = localStorage.getItem("token");
+//     if (!token && saved) setToken(saved);
+//   }, []);
+
+//   return (
+//     <>
+//       <style>{`
+//         .login-page {
+//           min-height: 85vh;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           padding: 2rem 1rem;
+//           background:
+//             radial-gradient(ellipse at 20% 50%, rgba(201,106,66,0.08) 0%, transparent 55%),
+//             radial-gradient(ellipse at 80% 20%, rgba(143,168,136,0.06) 0%, transparent 50%),
+//             var(--cream);
+//           position: relative;
+//           overflow: hidden;
+//         }
+//         /* Decorative large circle */
+//         .login-page::before {
+//           content: '';
+//           position: absolute;
+//           width: 600px;
+//           height: 600px;
+//           border-radius: 50%;
+//           border: 1px solid rgba(201,106,66,0.08);
+//           top: 50%;
+//           left: 50%;
+//           transform: translate(-50%, -50%);
+//           pointer-events: none;
+//         }
+//         .login-page::after {
+//           content: '';
+//           position: absolute;
+//           width: 900px;
+//           height: 900px;
+//           border-radius: 50%;
+//           border: 1px solid rgba(201,106,66,0.04);
+//           top: 50%;
+//           left: 50%;
+//           transform: translate(-50%, -50%);
+//           pointer-events: none;
+//         }
+//         .login-card {
+//           background: rgba(250,247,242,0.85);
+//           backdrop-filter: blur(24px) saturate(180%);
+//           -webkit-backdrop-filter: blur(24px) saturate(180%);
+//           border: 1.5px solid rgba(212,197,176,0.6);
+//           border-radius: var(--radius-xl);
+//           padding: clamp(2rem, 5vw, 3rem) clamp(2rem, 5vw, 2.75rem);
+//           width: 100%;
+//           max-width: 440px;
+//           box-shadow: 0 32px 80px rgba(44,24,16,0.14), 0 2px 0 rgba(255,255,255,0.6) inset;
+//           position: relative;
+//           z-index: 1;
+//         }
+//         .login-tab-row {
+//           display: flex;
+//           background: var(--cream-dark);
+//           border-radius: var(--radius-full);
+//           padding: 4px;
+//           margin-bottom: 2rem;
+//         }
+//         .login-tab {
+//           flex: 1;
+//           padding: 9px;
+//           font-family: var(--font-body);
+//           font-size: 0.78rem;
+//           font-weight: 600;
+//           letter-spacing: 0.06em;
+//           text-align: center;
+//           cursor: pointer;
+//           border: none;
+//           background: transparent;
+//           color: var(--mist);
+//           border-radius: var(--radius-full);
+//           transition: all 0.22s ease;
+//         }
+//         .login-tab.active {
+//           background: white;
+//           color: var(--espresso);
+//           box-shadow: 0 2px 8px rgba(44,24,16,0.1);
+//         }
+//         .login-field { margin-bottom: 14px; }
+//         .login-label {
+//           display: block;
+//           font-family: var(--font-body);
+//           font-size: 0.7rem;
+//           font-weight: 700;
+//           letter-spacing: 0.1em;
+//           text-transform: uppercase;
+//           color: var(--terra);
+//           margin-bottom: 6px;
+//         }
+//         .login-input {
+//           width: 100%;
+//           background: white;
+//           border: 1.5px solid var(--cream-deeper);
+//           border-radius: var(--radius-md);
+//           padding: 12px 16px;
+//           font-family: var(--font-body);
+//           font-size: 0.9rem;
+//           color: var(--espresso);
+//           outline: none;
+//           transition: all 0.18s ease;
+//           box-sizing: border-box;
+//         }
+//         .login-input::placeholder { color: var(--mist); }
+//         .login-input:focus {
+//           border-color: var(--terra);
+//           box-shadow: 0 0 0 3px rgba(201,106,66,0.1);
+//           background: white;
+//         }
+//         .login-submit {
+//           width: 100%;
+//           background: var(--espresso);
+//           color: var(--cream);
+//           border: none;
+//           border-radius: var(--radius-full);
+//           padding: 14px;
+//           font-family: var(--font-body);
+//           font-size: 0.82rem;
+//           font-weight: 700;
+//           letter-spacing: 0.12em;
+//           text-transform: uppercase;
+//           cursor: pointer;
+//           margin-top: 8px;
+//           transition: all 0.22s ease;
+//           box-shadow: 0 4px 20px rgba(44,24,16,0.22);
+//         }
+//         .login-submit:hover:not(:disabled) {
+//           background: var(--terra);
+//           box-shadow: var(--shadow-terra);
+//           transform: translateY(-1px);
+//         }
+//         .login-submit:disabled {
+//           background: var(--sand);
+//           cursor: not-allowed;
+//           box-shadow: none;
+//           transform: none;
+//         }
+//         .login-footer-text {
+//           font-family: var(--font-body);
+//           font-size: 0.78rem;
+//           color: var(--mist);
+//           text-align: center;
+//           margin-top: 16px;
+//         }
+//         .login-footer-link {
+//           color: var(--terra);
+//           font-weight: 600;
+//           background: none;
+//           border: none;
+//           cursor: pointer;
+//           font-family: var(--font-body);
+//           font-size: 0.78rem;
+//           text-decoration: underline;
+//           text-underline-offset: 2px;
+//         }
+//       `}</style>
+
+//       <div className="login-page">
+//         <motion.div
+//           className="login-card"
+//           initial={{ opacity: 0, y: 32, scale: 0.97 }}
+//           animate={{ opacity: 1, y: 0, scale: 1 }}
+//           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+//         >
+//           {/* Header */}
+//           <div style={{ marginBottom: '1.75rem' }}>
+//             <motion.p
+//               style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--terra)', marginBottom: 6 }}
+//               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
+//             >
+//               Welcome to Forever
+//             </motion.p>
+//             <motion.h1
+//               style={{ fontFamily: 'var(--font-display)', fontSize: '2.2rem', fontWeight: 600, color: 'var(--espresso)', margin: 0, letterSpacing: '-0.02em' }}
+//               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+//             >
+//               {mode === "Login" ? "Sign In" : "Create Account"}
+//             </motion.h1>
+//           </div>
+
+//           {/* Tab switcher */}
+//           <div className="login-tab-row">
+//             {["Login", "Sign Up"].map(t => (
+//               <button key={t} className={`login-tab${mode === t ? ' active' : ''}`} onClick={() => setMode(t)}>
+//                 {t}
+//               </button>
+//             ))}
+//           </div>
+
+//           <form onSubmit={onSubmit}>
+//             <AnimatePresence>
+//               {mode === "Sign Up" && (
+//                 <motion.div
+//                   className="login-field"
+//                   initial={{ opacity: 0, height: 0 }}
+//                   animate={{ opacity: 1, height: 'auto' }}
+//                   exit={{ opacity: 0, height: 0 }}
+//                   transition={{ duration: 0.28 }}
+//                   style={{ overflow: 'hidden' }}
+//                 >
+//                   <label className="login-label">Full Name</label>
+//                   <input
+//                     className="login-input"
+//                     type="text"
+//                     placeholder="Your full name"
+//                     value={name}
+//                     onChange={e => setName(e.target.value)}
+//                     required
+//                   />
+//                 </motion.div>
+//               )}
+//             </AnimatePresence>
+
+//             <div className="login-field">
+//               <label className="login-label">Email Address</label>
+//               <input
+//                 className="login-input"
+//                 type="email"
+//                 placeholder="you@example.com"
+//                 value={email}
+//                 onChange={e => setEmail(e.target.value)}
+//                 required
+//               />
+//             </div>
+
+//             <div className="login-field">
+//               <label className="login-label">Password</label>
+//               <div style={{ position: 'relative' }}>
+//                 <input
+//                   className="login-input"
+//                   type={showPassword ? "text" : "password"}
+//                   placeholder="Your password"
+//                   value={password}
+//                   onChange={e => setPassword(e.target.value)}
+//                   style={{ paddingRight: 44 }}
+//                   required
+//                 />
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowPassword(!showPassword)}
+//                   style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--mist)', display: 'flex', padding: 0 }}
+//                 >
+//                   <EyeIcon show={showPassword} />
+//                 </button>
+//               </div>
+//             </div>
+
+//             {mode === "Login" && (
+//               <div style={{ textAlign: 'right', marginBottom: 4, marginTop: -6 }}>
+//                 <button type="button" style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'var(--mist)', background: 'none', border: 'none', cursor: 'pointer' }}>
+//                   Forgot password?
+//                 </button>
+//               </div>
+//             )}
+
+//             <motion.button
+//               type="submit"
+//               className="login-submit"
+//               disabled={loading}
+//               whileHover={!loading ? { scale: 1.01 } : {}}
+//               whileTap={!loading ? { scale: 0.98 } : {}}
+//             >
+//               {loading ? (
+//                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+//                   <span style={{ width: 14, height: 14, border: '2px solid rgba(250,247,242,0.4)', borderTopColor: 'var(--cream)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
+//                   Please wait…
+//                 </span>
+//               ) : mode === "Login" ? "Sign In →" : "Create Account →"}
+//             </motion.button>
+//           </form>
+
+//           <p className="login-footer-text">
+//             {mode === "Login" ? "Don't have an account? " : "Already have an account? "}
+//             <button className="login-footer-link" onClick={() => setMode(mode === "Login" ? "Sign Up" : "Login")}>
+//               {mode === "Login" ? "Sign up free" : "Sign in"}
+//             </button>
+//           </p>
+
+//           {/* Trust badges */}
+//           <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, paddingTop: 20, borderTop: '1px solid var(--cream-deeper)' }}>
+//             {['🔒 Secure', '⚡ Fast', '✓ Trusted'].map(b => (
+//               <span key={b} style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', color: 'var(--mist)', fontWeight: 500 }}>{b}</span>
+//             ))}
+//           </div>
+//         </motion.div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Login;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 
-const EyeIcon = ({ show }) => show ? (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-    <line x1="1" y1="1" x2="23" y2="23" />
-  </svg>
-) : (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
-  </svg>
-)
+const ease = [0.16, 1, 0.3, 1];
 
 const Login = () => {
   const [mode, setMode] = useState("Login");
   const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [f, setF] = useState({ name: "", email: "", password: "" });
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const up = k => e => setF(p => ({ ...p, [k]: e.target.value }));
+  const signup = mode === "Sign Up";
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const submit = async e => {
+    e.preventDefault(); setLoading(true);
     try {
-      const endpoint = mode === "Sign Up" ? "/api/user/register" : "/api/user/login";
-      const payload = mode === "Sign Up" ? { name, email, password } : { email, password };
-      const res = await axios.post(backendUrl + endpoint, payload);
-      if (res.data.success) {
-        setToken(res.data.token);
-        localStorage.setItem("token", res.data.token);
-        toast.success(mode === "Sign Up" ? "Welcome to Forever! 🎉" : "Welcome back! 👋");
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
-    } finally {
-      setLoading(false);
-    }
+      const res = await axios.post(backendUrl + (signup ? "/api/user/register" : "/api/user/login"),
+        signup ? f : { email: f.email, password: f.password });
+      if (res.data.success) { setToken(res.data.token); localStorage.setItem("token", res.data.token); toast.success(signup ? "Welcome to Forever!" : "Welcome back!"); }
+      else toast.error(res.data.message);
+    } catch (err) { toast.error(err.response?.data?.message || err.message); }
+    finally { setLoading(false); }
   };
 
   useEffect(() => { if (token) navigate("/"); }, [token]);
-  useEffect(() => {
-    const saved = localStorage.getItem("token");
-    if (!token && saved) setToken(saved);
-  }, []);
+  useEffect(() => { const s = localStorage.getItem("token"); if (!token && s) setToken(s); }, []);
 
   return (
     <>
       <style>{`
-        .login-page {
-          min-height: 85vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem 1rem;
-          background:
-            radial-gradient(ellipse at 20% 50%, rgba(201,106,66,0.08) 0%, transparent 55%),
-            radial-gradient(ellipse at 80% 20%, rgba(143,168,136,0.06) 0%, transparent 50%),
-            var(--cream);
-          position: relative;
-          overflow: hidden;
-        }
-        /* Decorative large circle */
-        .login-page::before {
-          content: '';
-          position: absolute;
-          width: 600px;
-          height: 600px;
-          border-radius: 50%;
-          border: 1px solid rgba(201,106,66,0.08);
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
-        .login-page::after {
-          content: '';
-          position: absolute;
-          width: 900px;
-          height: 900px;
-          border-radius: 50%;
-          border: 1px solid rgba(201,106,66,0.04);
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
-        .login-card {
-          background: rgba(250,247,242,0.85);
-          backdrop-filter: blur(24px) saturate(180%);
-          -webkit-backdrop-filter: blur(24px) saturate(180%);
-          border: 1.5px solid rgba(212,197,176,0.6);
-          border-radius: var(--radius-xl);
-          padding: clamp(2rem, 5vw, 3rem) clamp(2rem, 5vw, 2.75rem);
-          width: 100%;
-          max-width: 440px;
-          box-shadow: 0 32px 80px rgba(44,24,16,0.14), 0 2px 0 rgba(255,255,255,0.6) inset;
-          position: relative;
-          z-index: 1;
-        }
-        .login-tab-row {
-          display: flex;
-          background: var(--cream-dark);
-          border-radius: var(--radius-full);
-          padding: 4px;
-          margin-bottom: 2rem;
-        }
-        .login-tab {
-          flex: 1;
-          padding: 9px;
-          font-family: var(--font-body);
-          font-size: 0.78rem;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-align: center;
-          cursor: pointer;
-          border: none;
-          background: transparent;
-          color: var(--mist);
-          border-radius: var(--radius-full);
-          transition: all 0.22s ease;
-        }
-        .login-tab.active {
-          background: white;
-          color: var(--espresso);
-          box-shadow: 0 2px 8px rgba(44,24,16,0.1);
-        }
-        .login-field { margin-bottom: 14px; }
-        .login-label {
-          display: block;
-          font-family: var(--font-body);
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--terra);
-          margin-bottom: 6px;
-        }
-        .login-input {
-          width: 100%;
-          background: white;
-          border: 1.5px solid var(--cream-deeper);
-          border-radius: var(--radius-md);
-          padding: 12px 16px;
-          font-family: var(--font-body);
-          font-size: 0.9rem;
-          color: var(--espresso);
-          outline: none;
-          transition: all 0.18s ease;
-          box-sizing: border-box;
-        }
-        .login-input::placeholder { color: var(--mist); }
-        .login-input:focus {
-          border-color: var(--terra);
-          box-shadow: 0 0 0 3px rgba(201,106,66,0.1);
-          background: white;
-        }
-        .login-submit {
-          width: 100%;
-          background: var(--espresso);
-          color: var(--cream);
-          border: none;
-          border-radius: var(--radius-full);
-          padding: 14px;
-          font-family: var(--font-body);
-          font-size: 0.82rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          cursor: pointer;
-          margin-top: 8px;
-          transition: all 0.22s ease;
-          box-shadow: 0 4px 20px rgba(44,24,16,0.22);
-        }
-        .login-submit:hover:not(:disabled) {
-          background: var(--terra);
-          box-shadow: var(--shadow-terra);
-          transform: translateY(-1px);
-        }
-        .login-submit:disabled {
-          background: var(--sand);
-          cursor: not-allowed;
-          box-shadow: none;
-          transform: none;
-        }
-        .login-footer-text {
-          font-family: var(--font-body);
-          font-size: 0.78rem;
-          color: var(--mist);
-          text-align: center;
-          margin-top: 16px;
-        }
-        .login-footer-link {
-          color: var(--terra);
-          font-weight: 600;
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-family: var(--font-body);
-          font-size: 0.78rem;
-          text-decoration: underline;
-          text-underline-offset: 2px;
-        }
+        .lg{display:grid;grid-template-columns:1.1fr 1fr;min-height:82vh;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-xl);margin:2rem 0;background:#fff}
+        @media(max-width:820px){.lg{grid-template-columns:1fr}.lg-side{display:none}}
+        .lg-side{position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:3rem;color:var(--cream);overflow:hidden;background:linear-gradient(150deg,var(--espresso),var(--espresso-mid) 55%,var(--terra-deep))}
+        .lg-side::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;top:-120px;right:-120px;background:radial-gradient(circle,rgba(184,146,74,.4),transparent 65%);animation:floaty 7s ease-in-out infinite}
+        .lg-form{display:flex;align-items:center;justify-content:center;padding:clamp(2rem,5vw,3.5rem)}
+        .lg-tabs{display:flex;position:relative;background:var(--cream-dark);border-radius:999px;padding:4px;margin-bottom:1.8rem}
+        .lg-tabs button{position:relative;z-index:1;flex:1;border:0;background:none;padding:10px;font:700 .78rem var(--font-body);letter-spacing:.06em;color:var(--mist);cursor:pointer;transition:color .3s}
+        .lg-tabs button.on{color:var(--espresso)}
+        .lg-pill{position:absolute;top:4px;bottom:4px;width:calc(50% - 4px);border-radius:999px;background:#fff;box-shadow:0 2px 10px rgba(36,20,16,.12)}
+        .lg label{display:block;margin:0 0 6px;font:800 .68rem var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--terra)}
+        .lg input{width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid var(--cream-deeper);border-radius:var(--radius-md);background:var(--cream);font:400 .92rem var(--font-body);color:var(--espresso);outline:0;transition:border-color .25s,box-shadow .25s,background .25s}
+        .lg input:focus{border-color:var(--terra);background:#fff;box-shadow:0 0 0 4px rgba(194,86,46,.12)}
       `}</style>
 
-      <div className="login-page">
-        <motion.div
-          className="login-card"
-          initial={{ opacity: 0, y: 32, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {/* Header */}
-          <div style={{ marginBottom: '1.75rem' }}>
-            <motion.p
-              style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--terra)', marginBottom: 6 }}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
-            >
-              Welcome to Forever
-            </motion.p>
-            <motion.h1
-              style={{ fontFamily: 'var(--font-display)', fontSize: '2.2rem', fontWeight: 600, color: 'var(--espresso)', margin: 0, letterSpacing: '-0.02em' }}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            >
-              {mode === "Login" ? "Sign In" : "Create Account"}
-            </motion.h1>
+      <div className="lg">
+        <aside className="lg-side">
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <p style={{ font: "700 .72rem var(--font-body)", letterSpacing: ".2em", textTransform: "uppercase", color: "var(--gold)", margin: "0 0 14px" }}>Forever</p>
+            <h2 style={{ font: "300 clamp(2.2rem,4vw,3.4rem)/1.05 var(--font-display)", letterSpacing: "-.03em", margin: "0 0 18px" }}>
+              Wear it once.<br /><em style={{ fontWeight: 600, color: "var(--gold)" }}>Love it forever.</em>
+            </h2>
+            <p style={{ maxWidth: 340, lineHeight: 1.8, color: "rgba(251,247,241,.7)", fontSize: ".92rem", margin: 0 }}>Sign in to track orders, save your cart and get picks chosen for your style.</p>
           </div>
+        </aside>
 
-          {/* Tab switcher */}
-          <div className="login-tab-row">
-            {["Login", "Sign Up"].map(t => (
-              <button key={t} className={`login-tab${mode === t ? ' active' : ''}`} onClick={() => setMode(t)}>
-                {t}
-              </button>
-            ))}
-          </div>
+        <section className="lg-form">
+          <motion.div style={{ width: "100%", maxWidth: 380 }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }}>
+            <h1 style={{ font: "600 2.2rem var(--font-display)", color: "var(--espresso)", margin: "0 0 22px", letterSpacing: "-.02em" }}>{signup ? "Create account" : "Welcome back"}</h1>
 
-          <form onSubmit={onSubmit}>
-            <AnimatePresence>
-              {mode === "Sign Up" && (
-                <motion.div
-                  className="login-field"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.28 }}
-                  style={{ overflow: 'hidden' }}
-                >
-                  <label className="login-label">Full Name</label>
-                  <input
-                    className="login-input"
-                    type="text"
-                    placeholder="Your full name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="login-field">
-              <label className="login-label">Email Address</label>
-              <input
-                className="login-input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
+            <div className="lg-tabs" role="tablist">
+              <motion.span className="lg-pill" animate={{ x: signup ? "100%" : "0%" }} transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+              {["Login", "Sign Up"].map(t => <button key={t} role="tab" aria-selected={mode === t} className={mode === t ? "on" : ""} onClick={() => setMode(t)}>{t}</button>)}
             </div>
 
-            <div className="login-field">
-              <label className="login-label">Password</label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  className="login-input"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Your password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  style={{ paddingRight: 44 }}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--mist)', display: 'flex', padding: 0 }}
-                >
-                  <EyeIcon show={showPassword} />
-                </button>
+            <form onSubmit={submit} style={{ display: "grid", gap: 14 }}>
+              <AnimatePresence initial={false}>
+                {signup && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: "hidden" }}>
+                    <label htmlFor="n">Full name</label><input id="n" required autoComplete="name" value={f.name} onChange={up("name")} placeholder="Your name" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <div><label htmlFor="e">Email</label><input id="e" type="email" required autoComplete="email" value={f.email} onChange={up("email")} placeholder="you@example.com" /></div>
+              <div>
+                <label htmlFor="p">Password</label>
+                <div style={{ position: "relative" }}>
+                  <input id="p" type={show ? "text" : "password"} required autoComplete={signup ? "new-password" : "current-password"} value={f.password} onChange={up("password")} placeholder="Your password" style={{ paddingRight: 56 }} />
+                  <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? "Hide password" : "Show password"}
+                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", border: 0, background: "none", cursor: "pointer", color: "var(--mist)", font: "700 .7rem var(--font-body)" }}>{show ? "HIDE" : "SHOW"}</button>
+                </div>
               </div>
-            </div>
 
-            {mode === "Login" && (
-              <div style={{ textAlign: 'right', marginBottom: 4, marginTop: -6 }}>
-                <button type="button" style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'var(--mist)', background: 'none', border: 'none', cursor: 'pointer' }}>
-                  Forgot password?
-                </button>
-              </div>
-            )}
-
-            <motion.button
-              type="submit"
-              className="login-submit"
-              disabled={loading}
-              whileHover={!loading ? { scale: 1.01 } : {}}
-              whileTap={!loading ? { scale: 0.98 } : {}}
-            >
-              {loading ? (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 14, height: 14, border: '2px solid rgba(250,247,242,0.4)', borderTopColor: 'var(--cream)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
-                  Please wait…
-                </span>
-              ) : mode === "Login" ? "Sign In →" : "Create Account →"}
-            </motion.button>
-          </form>
-
-          <p className="login-footer-text">
-            {mode === "Login" ? "Don't have an account? " : "Already have an account? "}
-            <button className="login-footer-link" onClick={() => setMode(mode === "Login" ? "Sign Up" : "Login")}>
-              {mode === "Login" ? "Sign up free" : "Sign in"}
-            </button>
-          </p>
-
-          {/* Trust badges */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 20, paddingTop: 20, borderTop: '1px solid var(--cream-deeper)' }}>
-            {['🔒 Secure', '⚡ Fast', '✓ Trusted'].map(b => (
-              <span key={b} style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', color: 'var(--mist)', fontWeight: 500 }}>{b}</span>
-            ))}
-          </div>
-        </motion.div>
+              <motion.button type="submit" disabled={loading} className="btn-terra" whileTap={{ scale: 0.97 }} style={{ justifyContent: "center", border: 0, marginTop: 6, opacity: loading ? 0.7 : 1 }}>
+                {loading ? "Please wait…" : signup ? "Create account" : "Sign in"}
+              </motion.button>
+            </form>
+          </motion.div>
+        </section>
       </div>
     </>
   );
 };
-
 export default Login;

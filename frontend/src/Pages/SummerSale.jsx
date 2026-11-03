@@ -519,244 +519,425 @@
 
 
 
-import React, { useContext, useEffect, useState } from "react";
+// import React, { useContext, useEffect, useState } from "react";
+// import { ShopContext } from "../Context/ShopContext";
+// import { Link } from "react-router-dom";
+// import { motion, AnimatePresence } from "framer-motion";
+// import Title from "../Components/Title";
+
+// const SALE_SUBCATS = ["Bottomwear", "Topwear"];
+// const DISCOUNT = 0.1;
+
+// const SaleCard = ({ id, image, name, originalPrice, salePrice }) => {
+//   const { currency } = useContext(ShopContext);
+//   const savingsPct = Math.round(DISCOUNT * 100);
+
+//   return (
+//     <Link to={`/product/${id}`} style={{ textDecoration: "none", display: "block" }}>
+//       <motion.article
+//         className="product-card"
+//         whileHover={{ y: -6 }}
+//         transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+//       >
+//         <div className="product-card-img">
+//           <img src={image[0]} alt={name} loading="lazy" />
+//           {/* Sale badge */}
+//           <span className="badge badge-terra" style={{ position: "absolute", top: 12, left: 12, fontSize: "0.62rem" }}>
+//             {savingsPct}% OFF
+//           </span>
+//         </div>
+
+//         <div style={{ padding: "14px 16px 18px" }}>
+//           <p style={{ fontFamily: "var(--font-body)", color: "var(--bark)", fontSize: "0.84rem", fontWeight: 500, margin: "0 0 6px", lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+//             {name}
+//           </p>
+//           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+//             <span className="price">{currency}{salePrice.toFixed(0)}</span>
+//             <span className="price-original">{currency}{originalPrice}</span>
+//           </div>
+//         </div>
+//       </motion.article>
+//     </Link>
+//   );
+// };
+
+// const SummerSale = () => {
+//   const { products } = useContext(ShopContext);
+//   const [filtered, setFiltered] = useState([]);
+//   const [activeCat, setActiveCat] = useState("All");
+//   const [sort, setSort] = useState("relevant");
+
+//   useEffect(() => {
+//     if (!products.length) return;
+//     let sale = products.filter(p => SALE_SUBCATS.includes(p.subCategory));
+//     if (activeCat !== "All") sale = sale.filter(p => p.subCategory === activeCat);
+//     if (sort === "low-high") sale = [...sale].sort((a, b) => a.price - b.price);
+//     else if (sort === "high-low") sale = [...sale].sort((a, b) => b.price - a.price);
+//     setFiltered(sale);
+//   }, [products, activeCat, sort]);
+
+//   const getSalePrice = price => price - price * DISCOUNT;
+
+//   return (
+//     <>
+//       <style>{`
+//         .sale-page { min-height: 80vh; background: var(--cream); }
+
+//         .sale-hero {
+//           background: linear-gradient(135deg, var(--espresso) 0%, var(--espresso-mid) 35%, var(--bark) 65%, var(--terra) 100%);
+//           padding: clamp(3rem, 6vw, 5rem) 2rem clamp(2.5rem, 5vw, 4rem);
+//           text-align: center;
+//           position: relative;
+//           overflow: hidden;
+//         }
+
+//         .sale-body { padding: 2.5rem 0; }
+
+//         .cat-pill {
+//           padding: 8px 20px;
+//           border-radius: var(--radius-full);
+//           border: 1.5px solid var(--cream-deeper);
+//           background: var(--cream);
+//           color: var(--bark);
+//           font-family: var(--font-body);
+//           font-size: 0.78rem;
+//           font-weight: 700;
+//           cursor: pointer;
+//           transition: all 0.2s;
+//         }
+//         .cat-pill.active { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
+//         .cat-pill:hover:not(.active) { border-color: var(--terra); color: var(--terra); background: rgba(201,106,66,0.05); }
+
+//         .sale-sort {
+//           appearance: none;
+//           background: var(--cream);
+//           border: 1.5px solid var(--cream-deeper);
+//           border-radius: var(--radius-full);
+//           padding: 9px 34px 9px 16px;
+//           font-family: var(--font-body);
+//           font-size: 0.78rem;
+//           color: var(--bark);
+//           font-weight: 600;
+//           cursor: pointer;
+//           outline: none;
+//           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C96A42' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+//           background-repeat: no-repeat;
+//           background-position: right 12px center;
+//           transition: border-color 0.18s;
+//         }
+//         .sale-sort:focus { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(201,106,66,0.1); }
+//       `}</style>
+
+//       <div className="sale-page">
+//         {/* ── Hero ── */}
+//         <div className="sale-hero">
+//           {/* Decorative elements */}
+//           <div style={{ position: "absolute", top: -80, right: -80, width: 280, height: 280, borderRadius: "50%", background: "rgba(250,247,242,0.05)", pointerEvents: "none" }} />
+//           <div style={{ position: "absolute", bottom: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: "rgba(143,168,136,0.07)", pointerEvents: "none" }} />
+//           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(250,247,242,0.04) 1px, transparent 1px)", backgroundSize: "24px 24px", pointerEvents: "none" }} />
+
+//           <div style={{ position: "relative", zIndex: 1 }}>
+//             <motion.span
+//               style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(250,247,242,0.12)", border: "1px solid rgba(250,247,242,0.22)", borderRadius: "var(--radius-full)", padding: "5px 18px", fontFamily: "var(--font-body)", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.2em", color: "rgba(250,247,242,0.7)", textTransform: "uppercase", marginBottom: 16 }}
+//               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
+//             >
+//               ☀️ Limited Time
+//             </motion.span>
+
+//             <motion.h1
+//               style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 600, color: "var(--cream)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "-0.02em" }}
+//               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
+//             >
+//               Summer Sale
+//             </motion.h1>
+
+//             <motion.p
+//               style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.7)", fontSize: "0.92rem", maxWidth: 440, margin: "0 auto 24px", lineHeight: 1.65 }}
+//               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}
+//             >
+//               Flat 10% off on all Bottomwear & Topwear. Discount applied automatically at checkout — no coupon needed.
+//             </motion.p>
+
+//             {/* Stats bar */}
+//             <motion.div
+//               style={{ display: "inline-flex", gap: 24, background: "rgba(250,247,242,0.1)", backdropFilter: "blur(8px)", border: "1px solid rgba(250,247,242,0.18)", borderRadius: "var(--radius-lg)", padding: "12px 28px" }}
+//               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+//             >
+//               {[
+//                 { label: "Products", value: filtered.length || "…" },
+//                 { label: "Discount", value: "10%" },
+//                 { label: "Applied", value: "Auto" },
+//               ].map(({ label, value }, i) => (
+//                 <React.Fragment key={label}>
+//                   {i > 0 && <div style={{ width: 1, background: "rgba(250,247,242,0.2)" }} />}
+//                   <div style={{ textAlign: "center" }}>
+//                     <p style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 700, color: "var(--cream)", margin: 0, letterSpacing: "-0.02em", lineHeight: 1 }}>{value}</p>
+//                     <p style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", color: "rgba(250,247,242,0.55)", margin: 0, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 3 }}>{label}</p>
+//                   </div>
+//                 </React.Fragment>
+//               ))}
+//             </motion.div>
+//           </div>
+//         </div>
+
+//         {/* ── Body ── */}
+//         <div className="sale-body">
+//           {/* Toolbar */}
+//           <motion.div
+//             style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 16 }}
+//             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+//           >
+//             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+//               {["All", ...SALE_SUBCATS].map(cat => (
+//                 <button key={cat} className={`cat-pill${activeCat === cat ? " active" : ""}`} onClick={() => setActiveCat(cat)}>
+//                   {cat}
+//                 </button>
+//               ))}
+//             </div>
+//             <select className="sale-sort" value={sort} onChange={e => setSort(e.target.value)}>
+//               <option value="relevant">Relevance</option>
+//               <option value="low-high">Price: Low → High</option>
+//               <option value="high-low">Price: High → Low</option>
+//             </select>
+//           </motion.div>
+
+//           <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--mist)", marginBottom: 16 }}>
+//             Showing <span style={{ color: "var(--terra)", fontWeight: 700 }}>{filtered.length}</span> sale items
+//           </p>
+
+//           {/* Auto-apply note */}
+//           <motion.div
+//             style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(201,106,66,0.06)", border: "1px solid rgba(201,106,66,0.18)", borderRadius: "var(--radius-md)", padding: "10px 16px", marginBottom: 20 }}
+//             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+//           >
+//             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--terra)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+//             <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--terra)", fontWeight: 600, margin: 0 }}>
+//               Prices shown include the 10% discount. Automatically applied at checkout — no code needed.
+//             </p>
+//           </motion.div>
+
+//           {/* Grid */}
+//           <AnimatePresence mode="wait">
+//             {filtered.length === 0 ? (
+//               <motion.div
+//                 style={{ textAlign: "center", padding: "4rem 2rem", color: "var(--mist)" }}
+//                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+//               >
+//                 <div style={{ fontSize: "3rem", marginBottom: 12, opacity: 0.35 }}>🏷️</div>
+//                 <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem" }}>No sale products found. Check back soon!</p>
+//               </motion.div>
+//             ) : (
+//               <motion.div
+//                 key={activeCat + sort}
+//                 className="products-grid"
+//                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+//               >
+//                 {filtered.map((item, i) => (
+//                   <motion.div key={item._id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.36), duration: 0.4 }}>
+//                     <SaleCard id={item._id} image={item.image} name={item.name} originalPrice={item.price} salePrice={getSalePrice(item.price)} />
+//                   </motion.div>
+//                 ))}
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+
+//           {/* Bottom CTA */}
+//           {filtered.length > 0 && (
+//             <motion.div
+//               style={{ marginTop: "3rem", textAlign: "center", padding: "2rem", background: "var(--cream-dark)", borderRadius: "var(--radius-xl)", border: "1.5px solid var(--cream-deeper)" }}
+//               initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+//             >
+//               <p style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", color: "var(--bark)", marginBottom: 14, fontWeight: 500 }}>
+//                 🛒 Add items to your cart normally — the <strong>10% discount</strong> is reflected automatically at checkout.
+//               </p>
+//               <Link to="/collection" className="btn-secondary">Browse All Products →</Link>
+//             </motion.div>
+//           )}
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default SummerSale;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useContext, useMemo, useState } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import Title from "../Components/Title";
+import Item from "../Components/Item";
 
-const SALE_SUBCATS = ["Bottomwear", "Topwear"];
-const DISCOUNT = 0.1;
-
-const SaleCard = ({ id, image, name, originalPrice, salePrice }) => {
-  const { currency } = useContext(ShopContext);
-  const savingsPct = Math.round(DISCOUNT * 100);
-
-  return (
-    <Link to={`/product/${id}`} style={{ textDecoration: "none", display: "block" }}>
-      <motion.article
-        className="product-card"
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="product-card-img">
-          <img src={image[0]} alt={name} loading="lazy" />
-          {/* Sale badge */}
-          <span className="badge badge-terra" style={{ position: "absolute", top: 12, left: 12, fontSize: "0.62rem" }}>
-            {savingsPct}% OFF
-          </span>
-        </div>
-
-        <div style={{ padding: "14px 16px 18px" }}>
-          <p style={{ fontFamily: "var(--font-body)", color: "var(--bark)", fontSize: "0.84rem", fontWeight: 500, margin: "0 0 6px", lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {name}
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span className="price">{currency}{salePrice.toFixed(0)}</span>
-            <span className="price-original">{currency}{originalPrice}</span>
-          </div>
-        </div>
-      </motion.article>
-    </Link>
-  );
-};
+const ease = [0.16, 1, 0.3, 1];
 
 const SummerSale = () => {
-  const { products } = useContext(ShopContext);
-  const [filtered, setFiltered] = useState([]);
-  const [activeCat, setActiveCat] = useState("All");
+  const { products, isOnSale, activeSale } = useContext(ShopContext);
+  const [cat, setCat] = useState("All");
   const [sort, setSort] = useState("relevant");
 
-  useEffect(() => {
-    if (!products.length) return;
-    let sale = products.filter(p => SALE_SUBCATS.includes(p.subCategory));
-    if (activeCat !== "All") sale = sale.filter(p => p.subCategory === activeCat);
-    if (sort === "low-high") sale = [...sale].sort((a, b) => a.price - b.price);
-    else if (sort === "high-low") sale = [...sale].sort((a, b) => b.price - a.price);
-    setFiltered(sale);
-  }, [products, activeCat, sort]);
-
-  const getSalePrice = price => price - price * DISCOUNT;
+  // Uses the SAME isOnSale() as the cart and product pages, so shown prices always match checkout
+  const onSale = useMemo(() => products.filter(p => isOnSale(p)), [products, isOnSale]);
+  const cats = useMemo(() => ["All", ...new Set(onSale.map(p => p.subCategory))], [onSale]);
+  const list = useMemo(() => {
+    let r = cat === "All" ? onSale : onSale.filter(p => p.subCategory === cat);
+    if (sort === "low-high") r = [...r].sort((a, b) => a.price - b.price);
+    if (sort === "high-low") r = [...r].sort((a, b) => b.price - a.price);
+    return r;
+  }, [onSale, cat, sort]);
+  const pct = activeSale?.discountPercent ?? 10;
 
   return (
     <>
       <style>{`
-        .sale-page { min-height: 80vh; background: var(--cream); }
-
-        .sale-hero {
-          background: linear-gradient(135deg, var(--espresso) 0%, var(--espresso-mid) 35%, var(--bark) 65%, var(--terra) 100%);
-          padding: clamp(3rem, 6vw, 5rem) 2rem clamp(2.5rem, 5vw, 4rem);
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .sale-body { padding: 2.5rem 0; }
-
-        .cat-pill {
-          padding: 8px 20px;
-          border-radius: var(--radius-full);
-          border: 1.5px solid var(--cream-deeper);
-          background: var(--cream);
-          color: var(--bark);
-          font-family: var(--font-body);
-          font-size: 0.78rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .cat-pill.active { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
-        .cat-pill:hover:not(.active) { border-color: var(--terra); color: var(--terra); background: rgba(201,106,66,0.05); }
-
-        .sale-sort {
-          appearance: none;
-          background: var(--cream);
-          border: 1.5px solid var(--cream-deeper);
-          border-radius: var(--radius-full);
-          padding: 9px 34px 9px 16px;
-          font-family: var(--font-body);
-          font-size: 0.78rem;
-          color: var(--bark);
-          font-weight: 600;
-          cursor: pointer;
-          outline: none;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C96A42' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 12px center;
-          transition: border-color 0.18s;
-        }
-        .sale-sort:focus { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(201,106,66,0.1); }
+        .ss-hero{position:relative;overflow:hidden;text-align:center;padding:clamp(3.5rem,8vw,6rem) 1.5rem;border-radius:0 0 var(--radius-xl) var(--radius-xl);background:linear-gradient(125deg,var(--espresso),var(--espresso-mid) 45%,var(--terra-deep))}
+        .ss-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(184,146,74,.35),transparent 45%);animation:floaty 8s ease-in-out infinite}
+        .ss-big{font:700 clamp(5rem,20vw,11rem)/.85 var(--font-display);letter-spacing:-.05em;color:var(--cream);margin:0}
+        .ss-big sup{font-size:.35em;color:var(--gold);vertical-align:top;margin-left:.05em}
+        .ss-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--cream-deeper);background:#fff;color:var(--bark);font:700 .78rem var(--font-body);cursor:pointer;transition:all .25s var(--ease)}
+        .ss-pill:hover{border-color:var(--terra);color:var(--terra);transform:translateY(-2px)}
+        .ss-pill.on{background:var(--espresso);border-color:var(--espresso);color:var(--cream)}
+        .ss-sort{border:1.5px solid var(--cream-deeper);background:#fff;border-radius:999px;padding:10px 18px;font:600 .8rem var(--font-body);color:var(--bark);outline:0;cursor:pointer}
       `}</style>
 
-      <div className="sale-page">
-        {/* ── Hero ── */}
-        <div className="sale-hero">
-          {/* Decorative elements */}
-          <div style={{ position: "absolute", top: -80, right: -80, width: 280, height: 280, borderRadius: "50%", background: "rgba(250,247,242,0.05)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: "rgba(143,168,136,0.07)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(250,247,242,0.04) 1px, transparent 1px)", backgroundSize: "24px 24px", pointerEvents: "none" }} />
-
+      <div style={{ minHeight: "80vh" }}>
+        <section className="ss-hero">
           <div style={{ position: "relative", zIndex: 1 }}>
-            <motion.span
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(250,247,242,0.12)", border: "1px solid rgba(250,247,242,0.22)", borderRadius: "var(--radius-full)", padding: "5px 18px", fontFamily: "var(--font-body)", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.2em", color: "rgba(250,247,242,0.7)", textTransform: "uppercase", marginBottom: 16 }}
-              initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
-            >
-              ☀️ Limited Time
+            <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} style={{ display: "inline-block", padding: "7px 18px", borderRadius: 999, marginBottom: 18, background: "rgba(251,247,241,.12)", border: "1px solid rgba(251,247,241,.22)", color: "rgba(251,247,241,.85)", font: "700 .72rem var(--font-body)", letterSpacing: ".16em", textTransform: "uppercase" }}>
+              Summer sale · limited time
             </motion.span>
-
-            <motion.h1
-              style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 600, color: "var(--cream)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "-0.02em" }}
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
-            >
-              Summer Sale
+            <motion.h1 className="ss-big" initial={{ opacity: 0, scale: 0.8, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 1, ease }}>
+              {pct}<sup>%</sup>
             </motion.h1>
-
-            <motion.p
-              style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.7)", fontSize: "0.92rem", maxWidth: 440, margin: "0 auto 24px", lineHeight: 1.65 }}
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}
-            >
-              Flat 10% off on all Bottomwear & Topwear. Discount applied automatically at checkout — no coupon needed.
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} style={{ margin: "20px auto 0", maxWidth: 440, color: "rgba(251,247,241,.75)", lineHeight: 1.7 }}>
+              Off everything below. Prices already include the discount, and it's applied automatically at checkout.
             </motion.p>
-
-            {/* Stats bar */}
-            <motion.div
-              style={{ display: "inline-flex", gap: 24, background: "rgba(250,247,242,0.1)", backdropFilter: "blur(8px)", border: "1px solid rgba(250,247,242,0.18)", borderRadius: "var(--radius-lg)", padding: "12px 28px" }}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-            >
-              {[
-                { label: "Products", value: filtered.length || "…" },
-                { label: "Discount", value: "10%" },
-                { label: "Applied", value: "Auto" },
-              ].map(({ label, value }, i) => (
-                <React.Fragment key={label}>
-                  {i > 0 && <div style={{ width: 1, background: "rgba(250,247,242,0.2)" }} />}
-                  <div style={{ textAlign: "center" }}>
-                    <p style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 700, color: "var(--cream)", margin: 0, letterSpacing: "-0.02em", lineHeight: 1 }}>{value}</p>
-                    <p style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", color: "rgba(250,247,242,0.55)", margin: 0, letterSpacing: "0.12em", textTransform: "uppercase", marginTop: 3 }}>{label}</p>
-                  </div>
-                </React.Fragment>
-              ))}
-            </motion.div>
           </div>
-        </div>
+        </section>
 
-        {/* ── Body ── */}
-        <div className="sale-body">
-          {/* Toolbar */}
-          <motion.div
-            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 16 }}
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          >
+        <div style={{ padding: "2.5rem 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 18 }}>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {["All", ...SALE_SUBCATS].map(cat => (
-                <button key={cat} className={`cat-pill${activeCat === cat ? " active" : ""}`} onClick={() => setActiveCat(cat)}>
-                  {cat}
-                </button>
-              ))}
+              {cats.map(c => <button key={c} className={`ss-pill${cat === c ? " on" : ""}`} onClick={() => setCat(c)}>{c}</button>)}
             </div>
-            <select className="sale-sort" value={sort} onChange={e => setSort(e.target.value)}>
-              <option value="relevant">Relevance</option>
-              <option value="low-high">Price: Low → High</option>
-              <option value="high-low">Price: High → Low</option>
+            <select className="ss-sort" value={sort} onChange={e => setSort(e.target.value)} aria-label="Sort">
+              <option value="relevant">Relevance</option><option value="low-high">Price: Low to high</option><option value="high-low">Price: High to low</option>
             </select>
-          </motion.div>
+          </div>
+          <p style={{ fontSize: ".8rem", color: "var(--mist)", margin: "0 0 20px" }}><b style={{ color: "var(--terra)" }}>{list.length}</b> items on sale</p>
 
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--mist)", marginBottom: 16 }}>
-            Showing <span style={{ color: "var(--terra)", fontWeight: 700 }}>{filtered.length}</span> sale items
-          </p>
-
-          {/* Auto-apply note */}
-          <motion.div
-            style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(201,106,66,0.06)", border: "1px solid rgba(201,106,66,0.18)", borderRadius: "var(--radius-md)", padding: "10px 16px", marginBottom: 20 }}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--terra)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--terra)", fontWeight: 600, margin: 0 }}>
-              Prices shown include the 10% discount. Automatically applied at checkout — no code needed.
-            </p>
-          </motion.div>
-
-          {/* Grid */}
           <AnimatePresence mode="wait">
-            {filtered.length === 0 ? (
-              <motion.div
-                style={{ textAlign: "center", padding: "4rem 2rem", color: "var(--mist)" }}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              >
-                <div style={{ fontSize: "3rem", marginBottom: 12, opacity: 0.35 }}>🏷️</div>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem" }}>No sale products found. Check back soon!</p>
-              </motion.div>
-            ) : (
-              <motion.div
-                key={activeCat + sort}
-                className="products-grid"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              >
-                {filtered.map((item, i) => (
-                  <motion.div key={item._id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.36), duration: 0.4 }}>
-                    <SaleCard id={item._id} image={item.image} name={item.name} originalPrice={item.price} salePrice={getSalePrice(item.price)} />
+            {list.length ? (
+              <motion.div key={cat + sort} className="products-grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                {list.map((it, i) => (
+                  <motion.div key={it._id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.55, ease }}>
+                    <Item id={it._id} image={it.image} name={it.name} price={it.price} />
                   </motion.div>
                 ))}
               </motion.div>
+            ) : (
+              <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--mist)" }}>No sale items right now. Check back soon.</div>
             )}
           </AnimatePresence>
 
-          {/* Bottom CTA */}
-          {filtered.length > 0 && (
-            <motion.div
-              style={{ marginTop: "3rem", textAlign: "center", padding: "2rem", background: "var(--cream-dark)", borderRadius: "var(--radius-xl)", border: "1.5px solid var(--cream-deeper)" }}
-              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            >
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", color: "var(--bark)", marginBottom: 14, fontWeight: 500 }}>
-                🛒 Add items to your cart normally — the <strong>10% discount</strong> is reflected automatically at checkout.
-              </p>
-              <Link to="/collection" className="btn-secondary">Browse All Products →</Link>
-            </motion.div>
-          )}
+          <div style={{ textAlign: "center", marginTop: "3.5rem" }}><Link to="/collection" className="btn-secondary">Browse everything</Link></div>
         </div>
       </div>
     </>
   );
 };
-
 export default SummerSale;
