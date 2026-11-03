@@ -125,109 +125,316 @@
 
 
 
+// import React, { useState } from "react";
+// import { assets } from "../assets/assets";
+// import Title from "../Components/Title";
+// import Newsletter from "../Components/Newsletter";
+// import { motion } from "framer-motion";
+
+// const ContactForm = () => {
+//   const [result, setResult] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   const onSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     const formData = new FormData(e.target);
+//     formData.append("access_key", "9cabbf2b-8e43-4017-86e1-0d49f4c6b811");
+//     const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
+//     const data = await res.json();
+//     setLoading(false);
+//     if (data.success) { setResult("success"); e.target.reset(); }
+//     else setResult("error");
+//   };
+
+//   const inputStyle = {
+//     width: '100%', background: 'white', border: '1.5px solid var(--cream-deeper)',
+//     borderRadius: 'var(--radius-md)', padding: '12px 16px',
+//     fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'var(--espresso)',
+//     outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.18s, box-shadow 0.18s',
+//   };
+
+//   return (
+//     <motion.div
+//       style={{ background: 'var(--cream)', border: '1.5px solid var(--cream-deeper)', borderRadius: 'var(--radius-xl)', padding: 'clamp(2rem, 4vw, 2.5rem)', maxWidth: 520, margin: '0 auto', boxShadow: 'var(--shadow-md)' }}
+//       initial={{ opacity: 0, y: 24 }}
+//       whileInView={{ opacity: 1, y: 0 }}
+//       viewport={{ once: true }}
+//       transition={{ duration: 0.5 }}
+//     >
+//       <div style={{ marginBottom: '1.5rem' }}>
+//         <Title text1="SEND US" text2="A MESSAGE" />
+//         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: 'var(--mist)', marginTop: 4 }}>
+//           We'll get back to you within 1–2 hours.
+//         </p>
+//       </div>
+
+//       {result === 'success' ? (
+//         <motion.div
+//           style={{ textAlign: 'center', padding: '2rem' }}
+//           initial={{ opacity: 0, scale: 0.9 }}
+//           animate={{ opacity: 1, scale: 1 }}
+//           transition={{ type: 'spring', stiffness: 300 }}
+//         >
+//           <div style={{ fontSize: '3rem', marginBottom: 12 }}>✅</div>
+//           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--espresso)', marginBottom: 8, fontWeight: 600 }}>Message Sent!</h3>
+//           <p style={{ fontFamily: 'var(--font-body)', color: 'var(--mist)', fontSize: '0.88rem' }}>
+//             Thank you for reaching out. We'll reply shortly.
+//           </p>
+//           <button onClick={() => setResult('')} className="btn-secondary" style={{ marginTop: 16 }}>Send Another</button>
+//         </motion.div>
+//       ) : (
+//         <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+//           <div>
+//             <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Full Name</label>
+//             <input name="name" type="text" required placeholder="Your name" style={inputStyle}
+//               onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
+//               onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
+//             />
+//           </div>
+//           <div>
+//             <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Email Address</label>
+//             <input name="email" type="email" required placeholder="you@example.com" style={inputStyle}
+//               onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
+//               onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
+//             />
+//           </div>
+//           <div>
+//             <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Message</label>
+//             <textarea name="message" required rows={4} placeholder="How can we help you?" style={{ ...inputStyle, resize: 'vertical', minHeight: 110 }}
+//               onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
+//               onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
+//             />
+//           </div>
+//           {result === 'error' && (
+//             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#ef4444', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 'var(--radius-md)', padding: '10px 14px', margin: 0 }}>
+//               Something went wrong. Please try again.
+//             </p>
+//           )}
+//           <motion.button
+//             type="submit"
+//             disabled={loading}
+//             className="btn-terra"
+//             style={{ width: '100%', justifyContent: 'center', marginTop: 4, opacity: loading ? 0.75 : 1 }}
+//             whileHover={!loading ? { scale: 1.01 } : {}}
+//             whileTap={!loading ? { scale: 0.97 } : {}}
+//           >
+//             {loading ? (
+//               <>
+//                 <span style={{ width: 14, height: 14, border: '2px solid rgba(250,247,242,0.4)', borderTopColor: 'var(--cream)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
+//                 Sending…
+//               </>
+//             ) : 'Send Message →'}
+//           </motion.button>
+//         </form>
+//       )}
+//     </motion.div>
+//   );
+// };
+
+// const Contact = () => (
+//   <>
+//     <style>{`
+//       .contact-page { padding-bottom: 2rem; }
+//       .contact-header { padding-top: 2.5rem; border-top: 2px solid var(--cream-deeper); text-align: center; margin-bottom: 1rem; }
+//       .contact-info-card {
+//         background: var(--cream);
+//         border: 1.5px solid var(--cream-deeper);
+//         border-radius: var(--radius-xl);
+//         padding: 2rem 2.5rem;
+//         flex: 1;
+//         box-shadow: var(--shadow-sm);
+//         align-self: flex-start;
+//       }
+//       .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--cream-deeper); }
+//       .contact-row:last-of-type { border-bottom: none; }
+//       .contact-row-icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: rgba(201,106,66,0.08); border: 1px solid rgba(201,106,66,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
+//       .explore-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--terra); border: 2px solid var(--terra); padding: 11px 26px; font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: var(--radius-full); cursor: pointer; transition: all 0.22s; margin-top: 16px; }
+//       .explore-btn:hover { background: var(--terra); color: var(--cream); transform: translateY(-2px); }
+//     `}</style>
+
+//     <div className="contact-page">
+//       <div className="contact-header">
+//         <Title text1="CONTACT" text2="US" />
+//       </div>
+
+//       {/* ── Store info + image ── */}
+//       <div className="flex flex-col justify-center gap-10 my-10 md:flex-row items-start">
+//         <motion.div
+//           style={{ flex: 1, borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', maxWidth: 460, flexShrink: 0 }}
+//           initial={{ opacity: 0, x: -28 }}
+//           whileInView={{ opacity: 1, x: 0 }}
+//           viewport={{ once: true }}
+//           transition={{ duration: 0.6 }}
+//         >
+//           <img src={assets.contact_img} alt="Contact Forever" style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
+//         </motion.div>
+
+//         <motion.div
+//           className="contact-info-card"
+//           initial={{ opacity: 0, x: 28 }}
+//           whileInView={{ opacity: 1, x: 0 }}
+//           viewport={{ once: true }}
+//           transition={{ duration: 0.6, delay: 0.1 }}
+//         >
+//           <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 600, color: 'var(--espresso)', margin: '0 0 16px', letterSpacing: '-0.01em' }}>Our Store</p>
+
+//           {[
+//             { icon: '📍', label: 'Address', value: '857 Munda Mazra, YamunaNagar, Haryana, India' },
+//             { icon: '📞', label: 'Phone', value: '+91 8053103060' },
+//             { icon: '✉️', label: 'Email', value: 'forever@shop.com' },
+//             { icon: '🕐', label: 'Hours', value: 'Monday–Saturday, 9am – 8pm IST' },
+//           ].map(({ icon, label, value }) => (
+//             <div key={label} className="contact-row">
+//               <div className="contact-row-icon">{icon}</div>
+//               <div>
+//                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--terra)', margin: '0 0 3px' }}>{label}</p>
+//                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'var(--bark)', margin: 0, lineHeight: 1.5 }}>{value}</p>
+//               </div>
+//             </div>
+//           ))}
+
+//           <div style={{ borderTop: '1px solid var(--cream-deeper)', marginTop: 16, paddingTop: 16 }}>
+//             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.92rem', fontWeight: 700, color: 'var(--espresso)', margin: '0 0 6px' }}>Careers at Forever</p>
+//             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: 'var(--mist)', margin: 0 }}>Learn more about our teams and open positions.</p>
+//             <motion.button className="explore-btn" whileTap={{ scale: 0.96 }}>Explore Jobs →</motion.button>
+//           </div>
+//         </motion.div>
+//       </div>
+
+//       {/* Divider */}
+//       <div className="divider" style={{ margin: '3rem 0' }} />
+
+//       {/* ── Contact form ── */}
+//       <ContactForm />
+
+//       <Newsletter />
+//     </div>
+//   </>
+// );
+
+// export default Contact;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import Title from "../Components/Title";
 import Newsletter from "../Components/Newsletter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-const ContactForm = () => {
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
+const ease = [0.16, 1, 0.3, 1];
+// Web3Forms access keys are designed to be public, but restrict this key to your domain in the Web3Forms dashboard.
+const ACCESS_KEY = "9cabbf2b-8e43-4017-86e1-0d49f4c6b811";
+const INFO = [["📍", "Address", "857 Munda Mazra, Yamunanagar, Haryana, India"], ["📞", "Phone", "+91 80531 03060"], ["✉️", "Email", "forever@gmail.com"], ["🕐", "Hours", "Monday to Saturday, 9 am to 9 pm IST"]];
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData(e.target);
-    formData.append("access_key", "9cabbf2b-8e43-4017-86e1-0d49f4c6b811");
-    const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
-    const data = await res.json();
-    setLoading(false);
-    if (data.success) { setResult("success"); e.target.reset(); }
-    else setResult("error");
+const Form = () => {
+  const [state, setState] = useState("idle"); // idle | loading | success | error
+  const submit = async e => {
+    e.preventDefault(); const form = e.target;
+    setState("loading");
+    try {
+      const fd = new FormData(form); fd.append("access_key", ACCESS_KEY);
+      const r = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd });
+      const d = await r.json();
+      if (d.success) { setState("success"); form.reset(); } else setState("error");
+    } catch { setState("error"); }
   };
-
-  const inputStyle = {
-    width: '100%', background: 'white', border: '1.5px solid var(--cream-deeper)',
-    borderRadius: 'var(--radius-md)', padding: '12px 16px',
-    fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'var(--espresso)',
-    outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.18s, box-shadow 0.18s',
-  };
-
   return (
-    <motion.div
-      style={{ background: 'var(--cream)', border: '1.5px solid var(--cream-deeper)', borderRadius: 'var(--radius-xl)', padding: 'clamp(2rem, 4vw, 2.5rem)', maxWidth: 520, margin: '0 auto', boxShadow: 'var(--shadow-md)' }}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      <div style={{ marginBottom: '1.5rem' }}>
-        <Title text1="SEND US" text2="A MESSAGE" />
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: 'var(--mist)', marginTop: 4 }}>
-          We'll get back to you within 1–2 hours.
-        </p>
-      </div>
-
-      {result === 'success' ? (
-        <motion.div
-          style={{ textAlign: 'center', padding: '2rem' }}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <div style={{ fontSize: '3rem', marginBottom: 12 }}>✅</div>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--espresso)', marginBottom: 8, fontWeight: 600 }}>Message Sent!</h3>
-          <p style={{ fontFamily: 'var(--font-body)', color: 'var(--mist)', fontSize: '0.88rem' }}>
-            Thank you for reaching out. We'll reply shortly.
-          </p>
-          <button onClick={() => setResult('')} className="btn-secondary" style={{ marginTop: 16 }}>Send Another</button>
-        </motion.div>
-      ) : (
-        <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div>
-            <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Full Name</label>
-            <input name="name" type="text" required placeholder="Your name" style={inputStyle}
-              onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
-              onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
-            />
-          </div>
-          <div>
-            <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Email Address</label>
-            <input name="email" type="email" required placeholder="you@example.com" style={inputStyle}
-              onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
-              onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
-            />
-          </div>
-          <div>
-            <label style={{ fontFamily: 'var(--font-body)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--terra)', display: 'block', marginBottom: 6 }}>Message</label>
-            <textarea name="message" required rows={4} placeholder="How can we help you?" style={{ ...inputStyle, resize: 'vertical', minHeight: 110 }}
-              onFocus={e => { e.target.style.borderColor = 'var(--terra)'; e.target.style.boxShadow = '0 0 0 3px rgba(201,106,66,0.1)'; }}
-              onBlur={e => { e.target.style.borderColor = 'var(--cream-deeper)'; e.target.style.boxShadow = 'none'; }}
-            />
-          </div>
-          {result === 'error' && (
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#ef4444', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 'var(--radius-md)', padding: '10px 14px', margin: 0 }}>
-              Something went wrong. Please try again.
-            </p>
-          )}
-          <motion.button
-            type="submit"
-            disabled={loading}
-            className="btn-terra"
-            style={{ width: '100%', justifyContent: 'center', marginTop: 4, opacity: loading ? 0.75 : 1 }}
-            whileHover={!loading ? { scale: 1.01 } : {}}
-            whileTap={!loading ? { scale: 0.97 } : {}}
-          >
-            {loading ? (
-              <>
-                <span style={{ width: 14, height: 14, border: '2px solid rgba(250,247,242,0.4)', borderTopColor: 'var(--cream)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />
-                Sending…
-              </>
-            ) : 'Send Message →'}
-          </motion.button>
-        </form>
-      )}
+    <motion.div initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease }}
+      style={{ maxWidth: 560, margin: "0 auto", padding: "clamp(1.8rem,4vw,2.6rem)", background: "#fff", border: "1px solid var(--cream-deeper)", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-lg)" }}>
+      <div style={{ marginBottom: 22 }}><Title text1="SEND US" text2="A MESSAGE" /><p style={{ margin: "10px 0 0", fontSize: ".86rem", color: "var(--mist)" }}>We usually reply within 1–2 hours.</p></div>
+      <AnimatePresence mode="wait">
+        {state === "success" ? (
+          <motion.div key="ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center", padding: "2rem 0" }}>
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#4a7c59" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" opacity=".35" />
+              <motion.polyline points="7 12.5 10.5 16 17 8.5" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.2, duration: 0.5 }} /></svg>
+            <h3 style={{ font: "600 1.6rem var(--font-display)", color: "var(--espresso)", margin: "12px 0 6px" }}>Message sent</h3>
+            <p style={{ color: "var(--mist)", margin: "0 0 18px" }}>Thanks for reaching out. We'll reply soon.</p>
+            <button className="btn-secondary" onClick={() => setState("idle")}>Send another</button>
+          </motion.div>
+        ) : (
+          <motion.form key="f" onSubmit={submit} exit={{ opacity: 0 }} style={{ display: "grid", gap: 16 }}>
+            {[["name", "Full name", "text", "name"], ["email", "Email address", "email", "email"]].map(([n, l, t, ac]) => (
+              <div key={n}><label className="ct-l" htmlFor={n}>{l}</label><input id={n} className="ct-in" name={n} type={t} autoComplete={ac} required /></div>
+            ))}
+            <div><label className="ct-l" htmlFor="message">Message</label><textarea id="message" className="ct-in" name="message" rows={5} required style={{ resize: "vertical", minHeight: 120 }} /></div>
+            {state === "error" && <p role="alert" style={{ margin: 0, padding: "10px 14px", borderRadius: 12, background: "rgba(220,38,38,.08)", color: "#b3372a", fontSize: ".84rem" }}>Something went wrong. Please try again.</p>}
+            <motion.button type="submit" className="btn-terra" disabled={state === "loading"} whileTap={{ scale: 0.97 }} style={{ justifyContent: "center", border: 0, opacity: state === "loading" ? 0.7 : 1 }}>
+              {state === "loading" ? "Sending…" : "Send message"}
+            </motion.button>
+          </motion.form>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
@@ -235,82 +442,34 @@ const ContactForm = () => {
 const Contact = () => (
   <>
     <style>{`
-      .contact-page { padding-bottom: 2rem; }
-      .contact-header { padding-top: 2.5rem; border-top: 2px solid var(--cream-deeper); text-align: center; margin-bottom: 1rem; }
-      .contact-info-card {
-        background: var(--cream);
-        border: 1.5px solid var(--cream-deeper);
-        border-radius: var(--radius-xl);
-        padding: 2rem 2.5rem;
-        flex: 1;
-        box-shadow: var(--shadow-sm);
-        align-self: flex-start;
-      }
-      .contact-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--cream-deeper); }
-      .contact-row:last-of-type { border-bottom: none; }
-      .contact-row-icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: rgba(201,106,66,0.08); border: 1px solid rgba(201,106,66,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem; }
-      .explore-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--terra); border: 2px solid var(--terra); padding: 11px 26px; font-family: var(--font-body); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: var(--radius-full); cursor: pointer; transition: all 0.22s; margin-top: 16px; }
-      .explore-btn:hover { background: var(--terra); color: var(--cream); transform: translateY(-2px); }
+      .ct-l{display:block;margin:0 0 6px;font:800 .68rem var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--terra)}
+      .ct-in{width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid var(--cream-deeper);border-radius:var(--radius-md);background:var(--cream);font:400 .92rem var(--font-body);color:var(--espresso);outline:0;transition:all .25s}
+      .ct-in:focus{border-color:var(--terra);background:#fff;box-shadow:0 0 0 4px rgba(194,86,46,.12)}
+      .ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,3.5rem);align-items:start;margin:2.5rem 0 4rem}
+      @media(max-width:820px){.ct-grid{grid-template-columns:1fr}}
+      .ct-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--cream-dark);transition:padding .35s var(--ease)}.ct-row:hover{padding-left:8px}.ct-row:last-child{border:0}
     `}</style>
+    <div style={{ borderTop: "2px solid var(--cream-deeper)", paddingTop: "2.5rem", textAlign: "center" }}><Title text1="CONTACT" text2="US" /></div>
 
-    <div className="contact-page">
-      <div className="contact-header">
-        <Title text1="CONTACT" text2="US" />
-      </div>
-
-      {/* ── Store info + image ── */}
-      <div className="flex flex-col justify-center gap-10 my-10 md:flex-row items-start">
-        <motion.div
-          style={{ flex: 1, borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', maxWidth: 460, flexShrink: 0 }}
-          initial={{ opacity: 0, x: -28 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <img src={assets.contact_img} alt="Contact Forever" style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
-        </motion.div>
-
-        <motion.div
-          className="contact-info-card"
-          initial={{ opacity: 0, x: 28 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 600, color: 'var(--espresso)', margin: '0 0 16px', letterSpacing: '-0.01em' }}>Our Store</p>
-
-          {[
-            { icon: '📍', label: 'Address', value: '857 Munda Mazra, YamunaNagar, Haryana, India' },
-            { icon: '📞', label: 'Phone', value: '+91 8053103060' },
-            { icon: '✉️', label: 'Email', value: 'forever@shop.com' },
-            { icon: '🕐', label: 'Hours', value: 'Monday–Saturday, 9am – 8pm IST' },
-          ].map(({ icon, label, value }) => (
-            <div key={label} className="contact-row">
-              <div className="contact-row-icon">{icon}</div>
-              <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--terra)', margin: '0 0 3px' }}>{label}</p>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'var(--bark)', margin: 0, lineHeight: 1.5 }}>{value}</p>
-              </div>
-            </div>
-          ))}
-
-          <div style={{ borderTop: '1px solid var(--cream-deeper)', marginTop: 16, paddingTop: 16 }}>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.92rem', fontWeight: 700, color: 'var(--espresso)', margin: '0 0 6px' }}>Careers at Forever</p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.84rem', color: 'var(--mist)', margin: 0 }}>Learn more about our teams and open positions.</p>
-            <motion.button className="explore-btn" whileTap={{ scale: 0.96 }}>Explore Jobs →</motion.button>
+    <div className="ct-grid">
+      <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, ease }}
+        style={{ borderRadius: "var(--radius-xl)", overflow: "hidden", boxShadow: "var(--shadow-xl)" }}>
+        <img src={assets.contact_img} alt="Forever store" style={{ display: "block", width: "100%", objectFit: "cover" }} />
+      </motion.div>
+      <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1, ease }}
+        style={{ padding: "1.8rem 2rem", background: "#fff", border: "1px solid var(--cream-deeper)", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-sm)" }}>
+        <h2 style={{ margin: "0 0 10px", font: "600 1.6rem var(--font-display)", color: "var(--espresso)" }}>Our store</h2>
+        {INFO.map(([i, l, v]) => (
+          <div key={l} className="ct-row">
+            <span style={{ width: 40, height: 40, borderRadius: 12, display: "grid", placeItems: "center", background: "rgba(194,86,46,.09)", flexShrink: 0 }}>{i}</span>
+            <div><p style={{ margin: "0 0 3px", font: "800 .66rem var(--font-body)", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--terra)" }}>{l}</p><p style={{ margin: 0, color: "var(--bark)", lineHeight: 1.5, fontSize: ".92rem" }}>{v}</p></div>
           </div>
-        </motion.div>
-      </div>
-
-      {/* Divider */}
-      <div className="divider" style={{ margin: '3rem 0' }} />
-
-      {/* ── Contact form ── */}
-      <ContactForm />
-
-      <Newsletter />
+        ))}
+      </motion.div>
     </div>
+
+    <Form />
+    <Newsletter />
   </>
 );
-
 export default Contact;
