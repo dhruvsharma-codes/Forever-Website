@@ -334,207 +334,379 @@
 
 
 
-import React, { useContext, useEffect, useState } from "react";
+// import React, { useContext, useEffect, useState } from "react";
+// import { ShopContext } from "../Context/ShopContext";
+// import Title from "../Components/Title";
+// import axios from "axios";
+// import { motion, AnimatePresence } from "framer-motion";
+
+// const statusConfig = (status = "") => {
+//   const s = status.toLowerCase();
+//   if (s.includes("deliver")) return { color: "#4a7c59", bg: "rgba(74,124,89,0.1)", border: "rgba(74,124,89,0.25)", dot: "#4a7c59", label: "Delivered" };
+//   if (s.includes("out for")) return { color: "#2563eb", bg: "rgba(37,99,235,0.1)", border: "rgba(37,99,235,0.25)", dot: "#2563eb", label: status };
+//   if (s.includes("ship")) return { color: "var(--terra)", bg: "rgba(201,106,66,0.1)", border: "rgba(201,106,66,0.25)", dot: "var(--terra)", label: status };
+//   if (s.includes("pack")) return { color: "var(--bark)", bg: "rgba(122,74,56,0.1)", border: "rgba(122,74,56,0.25)", dot: "var(--bark)", label: status };
+//   if (s.includes("cancel")) return { color: "#ef4444", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.25)", dot: "#ef4444", label: status };
+//   return { color: "var(--mist)", bg: "rgba(152,169,142,0.1)", border: "rgba(152,169,142,0.25)", dot: "var(--mist)", label: status };
+// };
+
+// const Orders = () => {
+//   const { backendUrl, token, currency } = useContext(ShopContext);
+//   const [orderData, setOrderData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const loadOrders = async () => {
+//     if (!token) return;
+//     setLoading(true);
+//     try {
+//       const res = await axios.post(backendUrl + "/api/order/userorders", {}, { headers: { token } });
+//       if (res.data.success) {
+//         const all = [];
+//         res.data.orders.forEach(order => {
+//           order.items.forEach(item => {
+//             all.push({ ...item, status: order.status, payment: order.payment, paymentMethod: order.paymentMethod, date: order.date, orderId: order._id });
+//           });
+//         });
+//         setOrderData(all.reverse());
+//       }
+//     } catch (err) { console.log(err); }
+//     finally { setLoading(false); }
+//   };
+
+//   useEffect(() => { loadOrders(); }, [token]);
+
+//   return (
+//     <>
+//       <style>{`
+//         .orders-page { padding-top: 3rem; border-top: 2px solid var(--cream-deeper); min-height: 60vh; }
+
+//         .order-card {
+//           background: var(--cream);
+//           border: 1.5px solid var(--cream-deeper);
+//           border-radius: var(--radius-lg);
+//           padding: 20px;
+//           margin-bottom: 14px;
+//           display: flex;
+//           flex-direction: column;
+//           gap: 16px;
+//           box-shadow: var(--shadow-sm);
+//           transition: border-color 0.2s, box-shadow 0.2s;
+//         }
+//         .order-card:hover { border-color: rgba(201,106,66,0.3); box-shadow: var(--shadow-md); }
+
+//         @media (min-width: 768px) {
+//           .order-card { flex-direction: row; align-items: center; justify-content: space-between; }
+//         }
+
+//         .track-btn {
+//           background: transparent;
+//           border: 1.5px solid var(--cream-deeper);
+//           color: var(--bark);
+//           font-family: var(--font-body);
+//           font-size: 0.76rem;
+//           font-weight: 700;
+//           letter-spacing: 0.1em;
+//           text-transform: uppercase;
+//           padding: 9px 20px;
+//           border-radius: var(--radius-full);
+//           cursor: pointer;
+//           white-space: nowrap;
+//           transition: all 0.2s;
+//         }
+//         .track-btn:hover { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
+
+//         .skeleton-row { display: flex; gap: 16px; padding: 20px; background: var(--cream); border: 1.5px solid var(--cream-deeper); border-radius: var(--radius-lg); margin-bottom: 14px; }
+//       `}</style>
+
+//       <div className="orders-page">
+//         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: 12 }}>
+//           <Title text1="MY" text2="ORDERS" />
+//           {!loading && orderData.length > 0 && (
+//             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'var(--mist)' }}>
+//               {orderData.length} item{orderData.length !== 1 ? 's' : ''} ordered
+//             </p>
+//           )}
+//         </div>
+
+//         {/* Loading skeletons */}
+//         {loading && (
+//           <div>
+//             {[1, 2, 3].map(i => (
+//               <div key={i} className="skeleton-row">
+//                 <div className="skeleton" style={{ width: 76, height: 96, flexShrink: 0, borderRadius: 'var(--radius-md)' }} />
+//                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 4 }}>
+//                   <div className="skeleton" style={{ height: 16, width: '55%', borderRadius: 6 }} />
+//                   <div className="skeleton" style={{ height: 14, width: '35%', borderRadius: 6 }} />
+//                   <div className="skeleton" style={{ height: 12, width: '25%', borderRadius: 6 }} />
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         )}
+
+//         {/* Empty */}
+//         {!loading && orderData.length === 0 && (
+//           <motion.div
+//             style={{ textAlign: 'center', padding: '5rem 2rem', color: 'var(--mist)' }}
+//             initial={{ opacity: 0, y: 20 }}
+//             animate={{ opacity: 1, y: 0 }}
+//           >
+//             <div style={{ fontSize: '3.5rem', marginBottom: '1rem', opacity: 0.35 }}>📦</div>
+//             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--espresso)', marginBottom: 8, fontWeight: 600 }}>
+//               No orders yet
+//             </h3>
+//             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.7 }}>
+//               Your order history will appear here once you make a purchase.
+//             </p>
+//           </motion.div>
+//         )}
+
+//         {/* Orders list */}
+//         <AnimatePresence>
+//           {!loading && orderData.map((item, i) => {
+//             const sc = statusConfig(item.status);
+//             return (
+//               <motion.div
+//                 key={i}
+//                 className="order-card"
+//                 initial={{ opacity: 0, y: 18 }}
+//                 animate={{ opacity: 1, y: 0 }}
+//                 transition={{ delay: Math.min(i * 0.05, 0.35), duration: 0.4 }}
+//               >
+//                 {/* Left: product */}
+//                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, flex: 1, minWidth: 0 }}>
+//                   <div style={{
+//                     width: 76, height: 96, borderRadius: 'var(--radius-md)',
+//                     overflow: 'hidden', border: '1.5px solid var(--cream-deeper)',
+//                     flexShrink: 0, background: 'var(--cream-dark)',
+//                   }}>
+//                     <img src={item.image[0]} alt={item.name}
+//                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+//                     />
+//                   </div>
+
+//                   <div style={{ minWidth: 0 }}>
+//                     <p style={{ fontFamily: 'var(--font-body)', color: 'var(--espresso)', fontWeight: 700, fontSize: '0.9rem', marginBottom: 8, lineHeight: 1.4 }}>
+//                       {item.name}
+//                     </p>
+//                     <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+//                       <span style={{ fontFamily: 'var(--font-display)', color: 'var(--terra)', fontSize: '1rem', fontWeight: 700 }}>
+//                         {currency}{item.price}
+//                       </span>
+//                       <span style={{ background: 'var(--cream-dark)', color: 'var(--bark)', fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--radius-full)' }}>
+//                         Qty: {item.quantity}
+//                       </span>
+//                       <span style={{ background: 'var(--cream-dark)', color: 'var(--bark)', fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--radius-full)' }}>
+//                         Size: {item.size}
+//                       </span>
+//                     </div>
+//                     <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.76rem', color: 'var(--mist)', marginBottom: 2 }}>
+//                       Ordered: {new Date(item.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+//                     </p>
+//                     <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--mist)' }}>
+//                       via {item.paymentMethod} · {item.payment ? '✓ Paid' : '⏳ Pending'}
+//                     </p>
+//                   </div>
+//                 </div>
+
+//                 {/* Right: status + action */}
+//                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
+//                   <span style={{
+//                     display: 'inline-flex', alignItems: 'center', gap: 7,
+//                     fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700,
+//                     background: sc.bg, border: `1px solid ${sc.border}`,
+//                     borderRadius: 'var(--radius-full)', padding: '6px 14px', color: sc.color,
+//                   }}>
+//                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: sc.dot, flexShrink: 0 }} />
+//                     {item.status}
+//                   </span>
+//                   <motion.button
+//                     onClick={loadOrders}
+//                     className="track-btn"
+//                     whileTap={{ scale: 0.95 }}
+//                   >
+//                     Track
+//                   </motion.button>
+//                 </div>
+//               </motion.div>
+//             );
+//           })}
+//         </AnimatePresence>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Orders;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { ShopContext } from "../Context/ShopContext";
 import Title from "../Components/Title";
 import axios from "axios";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-const statusConfig = (status = "") => {
-  const s = status.toLowerCase();
-  if (s.includes("deliver")) return { color: "#4a7c59", bg: "rgba(74,124,89,0.1)", border: "rgba(74,124,89,0.25)", dot: "#4a7c59", label: "Delivered" };
-  if (s.includes("out for")) return { color: "#2563eb", bg: "rgba(37,99,235,0.1)", border: "rgba(37,99,235,0.25)", dot: "#2563eb", label: status };
-  if (s.includes("ship")) return { color: "var(--terra)", bg: "rgba(201,106,66,0.1)", border: "rgba(201,106,66,0.25)", dot: "var(--terra)", label: status };
-  if (s.includes("pack")) return { color: "var(--bark)", bg: "rgba(122,74,56,0.1)", border: "rgba(122,74,56,0.25)", dot: "var(--bark)", label: status };
-  if (s.includes("cancel")) return { color: "#ef4444", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.25)", dot: "#ef4444", label: status };
-  return { color: "var(--mist)", bg: "rgba(152,169,142,0.1)", border: "rgba(152,169,142,0.25)", dot: "var(--mist)", label: status };
+const tone = (s = "") => {
+  const x = s.toLowerCase();
+  if (x.includes("deliver")) return ["#4a7c59", "rgba(74,124,89,.12)"];
+  if (x.includes("out for")) return ["#2563eb", "rgba(37,99,235,.1)"];
+  if (x.includes("cancel")) return ["#dc2626", "rgba(220,38,38,.1)"];
+  return ["var(--terra)", "rgba(194,86,46,.1)"];
 };
 
 const Orders = () => {
   const { backendUrl, token, currency } = useContext(ShopContext);
-  const [orderData, setOrderData] = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const loadOrders = async () => {
-    if (!token) return;
-    setLoading(true);
+  const load = useCallback(async () => {
+    if (!token) { setLoading(false); return; }
+    setLoading(true); setError("");
     try {
       const res = await axios.post(backendUrl + "/api/order/userorders", {}, { headers: { token } });
       if (res.data.success) {
         const all = [];
-        res.data.orders.forEach(order => {
-          order.items.forEach(item => {
-            all.push({ ...item, status: order.status, payment: order.payment, paymentMethod: order.paymentMethod, date: order.date, orderId: order._id });
-          });
-        });
-        setOrderData(all.reverse());
-      }
-    } catch (err) { console.log(err); }
+        res.data.orders.forEach(o => o.items.forEach(it => all.push({ ...it, status: o.status, payment: o.payment, method: o.paymentMethod, date: o.date, id: o._id })));
+        setItems(all.reverse());
+      } else setError(res.data.message || "Couldn't load your orders.");
+    } catch { setError("Couldn't load your orders. Check your connection and try again."); }
     finally { setLoading(false); }
-  };
+  }, [token, backendUrl]);
 
-  useEffect(() => { loadOrders(); }, [token]);
+  useEffect(() => { load(); }, [load]);
 
   return (
-    <>
-      <style>{`
-        .orders-page { padding-top: 3rem; border-top: 2px solid var(--cream-deeper); min-height: 60vh; }
-
-        .order-card {
-          background: var(--cream);
-          border: 1.5px solid var(--cream-deeper);
-          border-radius: var(--radius-lg);
-          padding: 20px;
-          margin-bottom: 14px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          box-shadow: var(--shadow-sm);
-          transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .order-card:hover { border-color: rgba(201,106,66,0.3); box-shadow: var(--shadow-md); }
-
-        @media (min-width: 768px) {
-          .order-card { flex-direction: row; align-items: center; justify-content: space-between; }
-        }
-
-        .track-btn {
-          background: transparent;
-          border: 1.5px solid var(--cream-deeper);
-          color: var(--bark);
-          font-family: var(--font-body);
-          font-size: 0.76rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          padding: 9px 20px;
-          border-radius: var(--radius-full);
-          cursor: pointer;
-          white-space: nowrap;
-          transition: all 0.2s;
-        }
-        .track-btn:hover { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
-
-        .skeleton-row { display: flex; gap: 16px; padding: 20px; background: var(--cream); border: 1.5px solid var(--cream-deeper); border-radius: var(--radius-lg); margin-bottom: 14px; }
-      `}</style>
-
-      <div className="orders-page">
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: 12 }}>
-          <Title text1="MY" text2="ORDERS" />
-          {!loading && orderData.length > 0 && (
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'var(--mist)' }}>
-              {orderData.length} item{orderData.length !== 1 ? 's' : ''} ordered
-            </p>
-          )}
-        </div>
-
-        {/* Loading skeletons */}
-        {loading && (
-          <div>
-            {[1, 2, 3].map(i => (
-              <div key={i} className="skeleton-row">
-                <div className="skeleton" style={{ width: 76, height: 96, flexShrink: 0, borderRadius: 'var(--radius-md)' }} />
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 4 }}>
-                  <div className="skeleton" style={{ height: 16, width: '55%', borderRadius: 6 }} />
-                  <div className="skeleton" style={{ height: 14, width: '35%', borderRadius: 6 }} />
-                  <div className="skeleton" style={{ height: 12, width: '25%', borderRadius: 6 }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Empty */}
-        {!loading && orderData.length === 0 && (
-          <motion.div
-            style={{ textAlign: 'center', padding: '5rem 2rem', color: 'var(--mist)' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div style={{ fontSize: '3.5rem', marginBottom: '1rem', opacity: 0.35 }}>📦</div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'var(--espresso)', marginBottom: 8, fontWeight: 600 }}>
-              No orders yet
-            </h3>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.7 }}>
-              Your order history will appear here once you make a purchase.
-            </p>
-          </motion.div>
-        )}
-
-        {/* Orders list */}
-        <AnimatePresence>
-          {!loading && orderData.map((item, i) => {
-            const sc = statusConfig(item.status);
-            return (
-              <motion.div
-                key={i}
-                className="order-card"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(i * 0.05, 0.35), duration: 0.4 }}
-              >
-                {/* Left: product */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    width: 76, height: 96, borderRadius: 'var(--radius-md)',
-                    overflow: 'hidden', border: '1.5px solid var(--cream-deeper)',
-                    flexShrink: 0, background: 'var(--cream-dark)',
-                  }}>
-                    <img src={item.image[0]} alt={item.name}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  </div>
-
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ fontFamily: 'var(--font-body)', color: 'var(--espresso)', fontWeight: 700, fontSize: '0.9rem', marginBottom: 8, lineHeight: 1.4 }}>
-                      {item.name}
-                    </p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                      <span style={{ fontFamily: 'var(--font-display)', color: 'var(--terra)', fontSize: '1rem', fontWeight: 700 }}>
-                        {currency}{item.price}
-                      </span>
-                      <span style={{ background: 'var(--cream-dark)', color: 'var(--bark)', fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--radius-full)' }}>
-                        Qty: {item.quantity}
-                      </span>
-                      <span style={{ background: 'var(--cream-dark)', color: 'var(--bark)', fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--radius-full)' }}>
-                        Size: {item.size}
-                      </span>
-                    </div>
-                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.76rem', color: 'var(--mist)', marginBottom: 2 }}>
-                      Ordered: {new Date(item.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </p>
-                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--mist)' }}>
-                      via {item.paymentMethod} · {item.payment ? '✓ Paid' : '⏳ Pending'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right: status + action */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 7,
-                    fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700,
-                    background: sc.bg, border: `1px solid ${sc.border}`,
-                    borderRadius: 'var(--radius-full)', padding: '6px 14px', color: sc.color,
-                  }}>
-                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: sc.dot, flexShrink: 0 }} />
-                    {item.status}
-                  </span>
-                  <motion.button
-                    onClick={loadOrders}
-                    className="track-btn"
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Track
-                  </motion.button>
-                </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+    <div style={{ borderTop: "2px solid var(--cream-deeper)", paddingTop: "3rem", minHeight: "60vh" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 12, marginBottom: "2rem" }}>
+        <Title text1="MY" text2="ORDERS" />
+        <motion.button className="btn-secondary" onClick={load} disabled={loading} whileTap={{ scale: 0.95 }} style={{ padding: "11px 22px" }}>
+          {loading ? "Refreshing…" : "↻ Refresh status"}
+        </motion.button>
       </div>
-    </>
+
+      {error && <p role="alert" style={{ padding: 14, borderRadius: 14, background: "rgba(220,38,38,.08)", color: "#b3372a", fontSize: ".88rem" }}>{error}</p>}
+
+      {loading && !items.length && [1, 2, 3].map(i => <div key={i} className="skeleton" style={{ height: 130, borderRadius: 20, marginBottom: 14 }} />)}
+
+      {!loading && !error && !items.length && (
+        <div style={{ textAlign: "center", padding: "5rem 1rem", color: "var(--mist)" }}>
+          <div className="floaty" style={{ fontSize: "3.6rem" }}>📦</div>
+          <h3 style={{ font: "600 1.7rem var(--font-display)", color: "var(--espresso)", margin: "10px 0 6px" }}>No orders yet</h3>
+          <p style={{ margin: 0 }}>Your orders will appear here after your first purchase.</p>
+        </div>
+      )}
+
+      {items.map((it, i) => {
+        const [c, bg] = tone(it.status);
+        return (
+          <motion.article key={`${it.id}-${it.name}-${it.size}-${i}`} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -3 }}
+            transition={{ delay: Math.min(i * 0.05, 0.4), duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            style={{ display: "flex", flexWrap: "wrap", gap: 18, alignItems: "center", justifyContent: "space-between", padding: 18, marginBottom: 14, background: "#fff", border: "1px solid var(--cream-deeper)", borderRadius: 20, boxShadow: "var(--shadow-sm)" }}>
+            <div style={{ display: "flex", gap: 16, flex: "1 1 320px", minWidth: 0 }}>
+              <div style={{ width: 80, height: 100, borderRadius: 14, overflow: "hidden", flexShrink: 0, background: "var(--cream-dark)" }}>
+                <img src={it.image[0]} alt={it.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ margin: "0 0 8px", font: "700 .96rem var(--font-body)", color: "var(--espresso)" }}>{it.name}</p>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8, alignItems: "center" }}>
+                  <b style={{ font: "700 1rem var(--font-display)", color: "var(--terra)" }}>{currency}{it.price}</b>
+                  {[`Qty ${it.quantity}`, `Size ${it.size}`].map(t => <span key={t} style={{ padding: "3px 11px", borderRadius: 999, background: "var(--cream-dark)", font: "700 .72rem var(--font-body)", color: "var(--bark)" }}>{t}</span>)}
+                </div>
+                <p style={{ margin: 0, fontSize: ".76rem", color: "var(--mist)", lineHeight: 1.6 }}>
+                  Ordered {new Date(it.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })} · {it.method} · {it.payment ? "Paid" : "Payment pending"}
+                </p>
+              </div>
+            </div>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 999, background: bg, color: c, font: "700 .78rem var(--font-body)" }}>
+              <i style={{ width: 7, height: 7, borderRadius: "50%", background: "currentColor" }} />{it.status}
+            </span>
+          </motion.article>
+        );
+      })}
+    </div>
   );
 };
-
 export default Orders;
