@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 // ─── Groq config ──────────────────────────────────────────────────────────────
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
 // const GROQ_MODEL   = 'llama-3.3-70b-versatile'
-const GROQ_MODEL   = 'llama-3.1-8b-instant'
+const GROQ_MODEL   = 'openai/gpt-oss-120b'
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY 
 console.log("groq key loaded:", !!import.meta.env.VITE_GROQ_API_KEY);
 // ─── Safe page routes (NEVER admin) ──────────────────────────────────────────
