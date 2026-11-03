@@ -8,6 +8,7 @@ import productRouter from "./routes/productRouter.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import recommendationRouter from "./routes/RecommendationRoute.js";
+ import assistantRouter from './routes/assistantRoute.js'
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -45,6 +46,7 @@ app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/recommendations", recommendationRouter);
+app.use('/api/assistant', assistantRouter) 
 
 app.get("/", (req, res) => res.send("API Working."));
 
