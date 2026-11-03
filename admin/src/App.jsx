@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
 import { Route, Routes } from "react-router-dom";
-import Add from "./pages/Add";
+import Add from "./pages/Add.jsx";
 import List from "./pages/List";
 import Orders from "./pages/Orders";
 import Login from "./Components/Login";
